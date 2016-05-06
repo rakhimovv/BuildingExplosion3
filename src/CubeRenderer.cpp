@@ -102,8 +102,9 @@ void CubeRenderer::render(Cube& cube)
     projection = glm::perspective(45.0f, (GLfloat)WIDTH / (GLfloat)HEIGHT, 0.1f, 100.0f);
 
     float cubeScaler = cube.edgeLength() / LOCAL_EDGE_LENGTH;
-    model = glm::scale(model, glm::vec3(cubeScaler, cubeScaler, cubeScaler));
     model = glm::translate(model, cube.getCenter());
+    model = glm::scale(model, glm::vec3(cubeScaler, cubeScaler, cubeScaler));
+
     // Get their uniform location
     GLint viewLoc = glGetUniformLocation(cubeShader.getProgram(), "view");
     GLint projLoc = glGetUniformLocation(cubeShader.getProgram(), "projection");
