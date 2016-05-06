@@ -20,6 +20,7 @@ public:
         Descriptor();
 
         std::vector<Vector3f> vertexPositions;
+        float edgeLength;
     };
 
     Block(const Descriptor &desc, GameSystem *owner);
@@ -37,6 +38,7 @@ public:
 private:
     GameSystem *owner;
     std::vector<ParticleHandle<ParticleInfo>> particleHandles;
+    float edgeLength;
     bool exists;
 };
 

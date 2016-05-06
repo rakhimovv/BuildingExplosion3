@@ -11,7 +11,8 @@ Bomb::Descriptor::Descriptor() {
 Bomb::Bomb(const Descriptor &desc, GameSystem *owner) {
     this->exists = true;
     this->owner = owner;
-    this->particleHandle = owner->GetParticleSystem()->AddParticle(desc.pos, 1.0f, false);
+    this->edgeLength = desc.edgeLength;
+    this->particleHandle = owner->GetParticleSystem()->AddParticle(desc.pos, desc.edgeLength / 2.0f, false);
 }
 
 Bomb::~Bomb() {
@@ -38,7 +39,7 @@ void Bomb::Update(float dt) {
 void Bomb::Render() {
     // TODO
     Vector3f pos = particleHandle.GetPos();
-    Cube cube(glm::vec3(pos.x, pos.y, pos.z), 0.5f); // TODO - quaternions
+    Cube cube(glm::vec3(pos.x, pos.y, pos.z), edgeLength); // TODO - quaternions
     owner->GetCubeRenderer()->render(cube);
 }
 

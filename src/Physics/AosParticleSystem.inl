@@ -50,9 +50,7 @@ template<typename UserInfo>
 void AosParticleSystem<UserInfo>::Update() {
     particles.Update();
 
-    for (size_t particleIndex = 0;
-         particleIndex < particles.GetElementsCount();
-         particleIndex++) {
+    for (size_t particleIndex = 0; particleIndex < particles.GetElementsCount(); particleIndex++) {
         size_t particleId = particles.GetId(particleIndex);
         AosParticle<UserInfo> &currParticle = particles.GetById(particleId);
 
@@ -61,37 +59,41 @@ void AosParticleSystem<UserInfo>::Update() {
         if (currParticle.isFixed) {
             currParticle.acceleration = Vector3f(0.0f, 0.0f, 0.0f);
         } else {
-            currParticle.acceleration = Vector3f(0.0f, 20.0f, 0.0f);
+            //currParticle.acceleration = Vector3f(0.0f, 20.0f, 0.0f);
         }
 
-        if (currParticle.pos.y +
-            currParticle.radius > maxPoint.y) {
-            currParticle.pos.y =
-                    maxPoint.y - currParticle.radius;
-            currParticle.prevPos.x =
-                    currParticle.pos.x;
+        if (currParticle.pos.y - currParticle.radius < minPoint.y) {
+
+            //std::cout << currParticle.pos.y << "\n";
+            //std::cout << "URAAA\n";
+
+            currParticle.pos.y = minPoint.y + currParticle.radius;
+            currParticle.prevPos.x = currParticle.pos.x;
+            currParticle.prevPos.z = currParticle.pos.z;
+
         }
-        if (currParticle.pos.y -
-            currParticle.radius < minPoint.y) {
-            currParticle.pos.y =
-                    minPoint.y + currParticle.radius;
-            currParticle.prevPos.x =
-                    currParticle.pos.x;
+        /*
+        if (currParticle.pos.y + currParticle.radius > maxPoint.y) {
+
+            currParticle.pos.y = maxPoint.y - currParticle.radius;
+            currParticle.prevPos.x = currParticle.pos.x;
+            currParticle.prevPos.z = currParticle.pos.z;
+
         }
-        if (currParticle.pos.x +
-            currParticle.radius > maxPoint.x) {
-            currParticle.pos.x =
-                    maxPoint.x - currParticle.radius;
-            currParticle.prevPos.y =
-                    currParticle.pos.y;
+        if (currParticle.pos.x + currParticle.radius > maxPoint.x) {
+
+            currParticle.pos.x = maxPoint.x - currParticle.radius;
+            currParticle.prevPos.y = currParticle.pos.y;
+            currParticle.prevPos.z = currParticle.pos.z;
+
         }
-        if (currParticle.pos.x -
-            currParticle.radius < minPoint.x) {
-            currParticle.pos.x =
-                    minPoint.x + currParticle.radius;
-            currParticle.prevPos.y =
-                    currParticle.pos.y;
-        }
+        if (currParticle.pos.x - currParticle.radius < minPoint.x) {
+
+            currParticle.pos.x = minPoint.x + currParticle.radius;
+            currParticle.prevPos.y = currParticle.pos.y;
+            currParticle.prevPos.z = currParticle.pos.z;
+
+        }*/
     }
     for (size_t linkIndex = 0;
          linkIndex < links.size();

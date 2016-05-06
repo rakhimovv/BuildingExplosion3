@@ -13,6 +13,7 @@ public:
     struct Descriptor {
         Descriptor();
         Vector3f pos;
+        float edgeLength;
     };
 
     Bomb(const Descriptor &desc, GameSystem *owner);
@@ -27,6 +28,7 @@ public:
 
 private:
     GameSystem *owner;
+    float edgeLength;
     ParticleHandle<ParticleInfo> particleHandle;
     bool exists;
 };
