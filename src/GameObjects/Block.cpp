@@ -3,6 +3,7 @@
 //
 
 #include "Block.h"
+#include "../Cube.h"
 
 Block::Descriptor::Descriptor() { }
 
@@ -15,6 +16,7 @@ Block::Block(const Descriptor &desc, GameSystem *owner) {
         particleHandles.push_back(owner->GetParticleSystem()->AddParticle(desc.vertexPositions[i], 5.0f, false));
     }
 
+    /*
     // Добавляем гравитацию
     for (int i = 0; i < particleHandles.size(); i++) {
         this->particleHandles[i].SetAcceleration(Vector3f(0.0f, -1.0f, 0.0f));
@@ -28,6 +30,7 @@ Block::Block(const Descriptor &desc, GameSystem *owner) {
             }
         }
     }
+     */
 }
 
 Block::~Block() {
@@ -43,7 +46,9 @@ void Block::Update(float dt) {
 }
 
 void Block::Render() {
-    // TODO render
+    Vector3f pos = particleHandles[0].GetPos();
+    Cube cube(glm::vec3(pos.x, pos.y, pos.z), 1.0f); // TODO - quaternions
+    owner->GetCubeRenderer()->render(cube);
 }
 
 bool Block::Exists() {

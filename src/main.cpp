@@ -25,7 +25,7 @@
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "OpenGL", sf::Style::Default, sf::ContextSettings(32, 8, 3, 3, 0));
+    sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "BuildingExplosion3", sf::Style::Default, sf::ContextSettings(32, 8, 3, 3, 0));
 
     sf::Clock gameClock;
     float elapsedTime = 0.0f;
@@ -42,8 +42,8 @@ int main()
     //GameShader cubeShader("data/shaders/cubevertex.frag", "data/shaders/cubefragment.frag");
 
     // Инициалиазация openGl для примитивов в классах обернута
-    SkyBoxRenderer skyBoxRenderer;
-    CubeRenderer cubeRenderer;
+    //SkyBoxRenderer skyBoxRenderer;
+    //CubeRenderer cubeRenderer;
     GameSystem gameSystem(constTimeStep);
 
     bool isRunning = true;
@@ -64,13 +64,13 @@ int main()
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             gameSystem.Update(constTimeStep);
 
-            skyBoxRenderer.render();
+            //skyBoxRenderer.render();
 
-            for (size_t i = 0; i < 2; i++) {
+            /*for (size_t i = 0; i < 2; i++) {
                 Cube cube(glm::vec3(-3.0f + 2 * i + 0.5f, 0.0f, 0.0f),
                           1.0f); // 1 координата - центр, 2-ое - ребро TODO - quaternions
                 cubeRenderer.render(cube); // один рендерер на все кубики
-            }
+            }*/
 
             window.display();
         }
