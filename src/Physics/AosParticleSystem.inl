@@ -1,4 +1,5 @@
 #include "AosParticleSystem.h"
+#include <iostream>
 
 template<typename UserInfo>
 void AosParticle<UserInfo>::Integrate(float dt) {
@@ -22,7 +23,10 @@ void AosLink<UserInfo>::Solve(AosParticleSystem<UserInfo> *sys) {
     AosParticle<UserInfo> *p0 = &(sys->GetParticleById(particleId0));
     AosParticle<UserInfo> *p1 = &(sys->GetParticleById(particleId1));
     Vector3f delta = p1->pos - p0->pos;
+    std::cout << "delta: " << delta.Length() << "\n";
     Vector3f dir = delta * (1.0f / delta.Length());
+
+    //if (delta.Length() < 2.5f) {
     if (!p0->isFixed) {
         p0->pos = p0->pos + dir *
                             (delta.Length() - defLength) * 0.5f * stiffness;
@@ -31,6 +35,7 @@ void AosLink<UserInfo>::Solve(AosParticleSystem<UserInfo> *sys) {
         p1->pos = p1->pos + dir *
                             (delta.Length() - defLength) * -0.5f * stiffness;
     }
+    //}
 }
 
 template<typename UserInfo>

@@ -29,7 +29,7 @@ public:
 
     ParticleSystem<ParticleInfo> *GetParticleSystem();
 
-    void *SetExplosion(Explosion *explosion);
+    void SetExplosion(Explosion *explosion);
 
     SkyBoxRenderer *GetSkyBoxRenderer();
 

@@ -37,8 +37,6 @@ void Explosion::Update(float dt) {
             blockParticle.SetAcceleration(resultAcceleration);
         }
     }
-
-    Explosion::Render();
 }
 
 void Explosion::Render() {

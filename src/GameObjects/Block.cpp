@@ -39,17 +39,21 @@ Block::~Block() {
 void Block::Update(float dt) {
     // Добавляем гравитацию
     for (int i = 0; i < particleHandles.size(); i++) {
-        //this->particleHandles[i].SetAcceleration(Vector3f(0.0f, -0.5f, 0.0f));
+        this->particleHandles[i].SetAcceleration(Vector3f(0.0f, -0.1f, 0.0f));
     }
 }
 
 void Block::Render() {
     // TODO додумать как отрисовывать блок
     Vector3f pos = particleHandles[0].GetPos();
-    Cube cube(glm::vec3(pos.x, pos.y, pos.z), 0.5f); // TODO - quaternions
+    Cube cube(glm::vec3(pos.x, pos.y, pos.z), 1.0f); // TODO - quaternions
     owner->GetCubeRenderer()->render(cube);
 }
 
 bool Block::Exists() {
     return exists;
+}
+
+ParticleHandle<ParticleInfo> *Block::GetParticleHandle(int id) {
+    return  &(particleHandles[id]);
 }

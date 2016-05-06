@@ -6,7 +6,7 @@
 #include "../Physics/AosParticleSystem.h"
 
 // Границы мира
-const Vector3f minPoint = Vector3f(-1e1f, -5.0f, -1.0f);
+const Vector3f minPoint = Vector3f(-1e1f, -1.0f, -1.0f);
 const Vector3f maxPoint = Vector3f(1e1f, 1e1f, 1.0f);
 
 GameSystem::GameSystem(float constTimeStep) {
@@ -24,18 +24,23 @@ GameSystem::GameSystem(float constTimeStep) {
     for (int i = 0; i < 2; i++) {
         Block::Descriptor blockDesc;
         // TODO как задавать блоки
-        blockDesc.vertexPositions.push_back(Vector3f(-3.0f + 2 * i + 0.5f, 0.0f, 0.0f));
+        blockDesc.vertexPositions.push_back(Vector3f(-1.0f + 2 * i + 0.5f, 1.0f, 0.0f));
         blocks.Add(new Block(blockDesc, this));
     }
 
     // Добавим связи между блоками (не внутри них!)
     for (int i = 0; i < blocks.GetElementsCount(); i++) {
         // TODO нормально добавиться связи
+        for (int j = 0; j < blocks.GetElementsCount(); j++) {
+            if (i != j) {
+                GetParticleSystem()->AddLink(*blocks.GetByIndex(i)->GetParticleHandle(0), *blocks.GetByIndex(j)->GetParticleHandle(0));
+            }
+        }
     }
 
     // Создадим бомбу
     Bomb::Descriptor bombDesc;
-    bombDesc.pos = Vector3f(-3.0f + 1.0f + 0.5f, 1.0f, 0.0f);
+    bombDesc.pos = Vector3f(-1.0f + 1.0f + 0.5f, 1.5f, 0.0f);
     bomb = new Bomb(bombDesc, this);
 }
 
@@ -61,7 +66,7 @@ SkyBoxRenderer *GameSystem::GetSkyBoxRenderer() {
     return skyBoxRenderer;
 }
 
-void *GameSystem::SetExplosion(Explosion *explosion) {
+void GameSystem::SetExplosion(Explosion *explosion) {
     this->explosion = explosion;
 }
 
@@ -102,7 +107,6 @@ void GameSystem::Update(float dt) {
 
     // Взрыв
     if (explosion && explosion->Exists()) {
-        std::cout << "Update explosion\n";
         explosion->Update(dt);
     } else {
         delete explosion;

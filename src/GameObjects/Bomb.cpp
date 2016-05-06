@@ -3,7 +3,6 @@
 //
 
 #include "Bomb.h"
-#include "Explosion.h"
 
 Bomb::Descriptor::Descriptor() {
     this->pos = Vector3f(0.0f, 0.0f, 0.0f);

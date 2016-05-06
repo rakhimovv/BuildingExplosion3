@@ -28,6 +28,8 @@ public:
 
     void Update(float dt);
 
+    ParticleHandle<ParticleInfo> *GetParticleHandle(int id);
+
     void Render();
 
     bool Exists();
