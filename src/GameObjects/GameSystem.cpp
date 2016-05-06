@@ -100,9 +100,9 @@ void GameSystem::Update(float dt) {
         bomb = 0;
     }
 
-
     // Взрыв
     if (explosion && explosion->Exists()) {
+        std::cout << "Update explosion\n";
         explosion->Update(dt);
     } else {
         delete explosion;
