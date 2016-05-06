@@ -5,19 +5,30 @@
 #include "GameSystem.h"
 #include "../Physics/AosParticleSystem.h"
 
+// Границы мира
+const Vector3f minPoint = Vector3f(-1e1f, -1e1f, -1.0f);
+const Vector3f maxPoint = Vector3f(1e1f, 1e1f, 1.0f);
+
 GameSystem::GameSystem(float constTimeStep) {
+
     this->constTimeStep = constTimeStep;
-    this->particleSystem = new AosParticleSystem<ParticleInfo>(Vector3f(-1e5f, -1e5f, -1e5f),
-                                                               Vector3f(1e5f, 1e5f, 1e5f),
-                                                               constTimeStep);
+    this->particleSystem = new AosParticleSystem<ParticleInfo>(minPoint, maxPoint, constTimeStep);
+
+    // Инициалиазация openGl для примитивов в классах обернута
     this->skyBoxRenderer = new SkyBoxRenderer();
     this->cubeRenderer = new CubeRenderer();
 
     // Создаем блоки
     for (int i = 0; i < 2; i++) {
         Block::Descriptor blockDesc;
+        // TODO как задавать блоки
         blockDesc.vertexPositions.push_back(Vector3f(-3.0f + 2 * i + 0.5f, 0.0f, 0.0f));
         blocks.Add(new Block(blockDesc, this));
+    }
+
+    // Добавим связи между блоками (не внутри них!)
+    for (int i = 0; i < blocks.GetElementsCount(); i++) {
+        // TODO нормально добавиться связи
     }
 }
 
