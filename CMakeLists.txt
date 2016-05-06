@@ -31,7 +31,9 @@ set(SOURCE_FILES
         src/Physics/AosParticleSystem.inl
         src/Physics/ParticleInfo.h
         src/Physics/ParticleSystem.h
-        src/Physics/ParticleSystem.inl)
+        src/Physics/ParticleSystem.inl
+        src/GameObjects/Block.cpp
+        src/GameObjects/Block.h src/GameObjects/GameSystem.cpp src/GameObjects/GameSystem.h)
 
 add_executable(${EXECUTABLE_NAME} ${SOURCE_FILES})
 

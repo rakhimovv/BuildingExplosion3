@@ -42,7 +42,7 @@ class AosParticleSystem : public ParticleSystem<UserInfo> {
 public:
     AosParticleSystem(Vector3f minPoint, Vector3f maxPoint, float dt);
 
-    void Update(CollisionProcessor<UserInfo> *collisionProcessor);
+    void Update();
 
     size_t AddLink(ParticleHandle<UserInfo> particle0, ParticleHandle<UserInfo> particle1, float stiffness = 0.5f,
                    float stretch = 1.0f);

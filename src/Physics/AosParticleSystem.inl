@@ -42,7 +42,7 @@ AosParticleSystem<UserInfo>::AosParticleSystem(Vector3f minPoint, Vector3f maxPo
 }
 
 template<typename UserInfo>
-void AosParticleSystem<UserInfo>::Update(CollisionProcessor<UserInfo> *collisionProcessor) {
+void AosParticleSystem<UserInfo>::Update() {
     particles.Update();
 
     for (size_t particleIndex = 0;

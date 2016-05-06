@@ -53,7 +53,7 @@ class ParticleSystem {
 public:
     virtual void SetBounds(Vector3f minPoint, Vector3f maxPoint) = 0;
 
-    virtual void Update(CollisionProcessor<UserInfo> *collisionProcessor) = 0;
+    virtual void Update() = 0;
 
     virtual size_t AddLink(ParticleHandle<UserInfo> particleHandle0, ParticleHandle<UserInfo> particleHandle1,
                            float stiffness = 0.5f, float stretch = 1.0f) = 0;

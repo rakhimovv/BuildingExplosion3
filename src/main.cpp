@@ -20,16 +20,31 @@
 #include "WindowSize.h"
 
 #include "shader.h"
+#include "GameObjects/GameSystem.h"
 
 
-void drawCubes (sf::RenderWindow &window, sf::Clock &gameClock)
+int main()
 {
+    sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "OpenGL", sf::Style::Default, sf::ContextSettings(32, 8, 3, 3, 0));
+
+    sf::Clock gameClock;
+    float elapsedTime = 0.0f;
+    float lastUpdateTime = 0.0f;
+    float constTimeStep = 1.0f / 30.0f;
+
+    glewExperimental = GL_TRUE;
+    glewInit();
+
+    glViewport(0, 0, window.getSize().x, window.getSize().y);
+    glClearColor(1.0f, 0.1f, 0.4f, 1.0f);
+    glEnable(GL_DEPTH_TEST);
+
     //GameShader cubeShader("data/shaders/cubevertex.frag", "data/shaders/cubefragment.frag");
 
     // Инициалиазация openGl для примитивов в классах обернута
     SkyBoxRenderer skyBoxRenderer;
     CubeRenderer cubeRenderer;
-
+    GameSystem gameSystem(constTimeStep);
 
     bool isRunning = true;
     while (isRunning) {
@@ -42,34 +57,26 @@ void drawCubes (sf::RenderWindow &window, sf::Clock &gameClock)
             }
         }
 
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        float currTime = gameClock.getElapsedTime().asSeconds();
+        if (currTime - lastUpdateTime > constTimeStep) {
+            lastUpdateTime += constTimeStep;
+            elapsedTime += constTimeStep;
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            gameSystem.Update(constTimeStep);
 
-        skyBoxRenderer.render();
+            skyBoxRenderer.render();
 
-        for (size_t i = 0; i < 2; i++) {
-            Cube cube(glm::vec3(-3.0f + 2*i + 0.5f, 0.0f, 0.0f), 1.0f); // 1 координата - центр, 2-ое - ребро TODO - quaternions
-            cubeRenderer.render(cube); // один рендерер на все кубики
+            for (size_t i = 0; i < 2; i++) {
+                Cube cube(glm::vec3(-3.0f + 2 * i + 0.5f, 0.0f, 0.0f),
+                          1.0f); // 1 координата - центр, 2-ое - ребро TODO - quaternions
+                cubeRenderer.render(cube); // один рендерер на все кубики
+            }
+
+            window.display();
         }
-
-        window.display();
     }
 
     window.close();
-}
-
-int main()
-{
-    sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "OpenGL", sf::Style::Default, sf::ContextSettings(32, 8, 3, 3, 0));
-    sf::Clock gameClock;
-
-    glewExperimental = GL_TRUE;
-    glewInit();
-
-    glViewport(0, 0, window.getSize().x, window.getSize().y);
-    glClearColor(1.0f, 0.1f, 0.4f, 1.0f);
-    glEnable(GL_DEPTH_TEST);
-
-    drawCubes(window, gameClock);
 
     return 0;
 }
