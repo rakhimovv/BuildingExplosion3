@@ -6,7 +6,29 @@
 #define BUILDINGEXPLOSION3_BOMB_H
 
 
+#include "GameSystem.h"
+
 class Bomb {
+public:
+    struct Descriptor {
+        Descriptor();
+        Vector3f pos;
+    };
+
+    Bomb(const Descriptor &desc, GameSystem *owner);
+
+    ~Bomb();
+
+    void Update(float dt);
+
+    void Render();
+
+    bool Exists();
+
+private:
+    GameSystem *owner;
+    ParticleHandle<ParticleInfo> particleHandle;
+    bool exists;
 };
 
 

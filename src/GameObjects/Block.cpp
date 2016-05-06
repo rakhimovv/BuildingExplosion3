@@ -13,7 +13,7 @@ Block::Block(const Descriptor &desc, GameSystem *owner) {
 
     // Создаем частицы
     for (int i = 0; i < desc.vertexPositions.size(); i++) {
-        particleHandles.push_back(owner->GetParticleSystem()->AddParticle(desc.vertexPositions[i], 5.0f, false));
+        particleHandles.push_back(owner->GetParticleSystem()->AddParticle(desc.vertexPositions[i], 1.0f, false));
     }
 
     /*

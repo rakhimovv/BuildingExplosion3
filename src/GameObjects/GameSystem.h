@@ -10,8 +10,14 @@
 #include "../Utils/CachedArray.h"
 #include "../CubeRenderer.h"
 #include "../SkyboxRenderer.h"
+#include "Explosion.h"
+#include "Bomb.h"
 
 class Block;
+
+class Bomb;
+
+class Explosion;
 
 class GameSystem {
 public:
@@ -23,6 +29,8 @@ public:
 
     ParticleSystem<ParticleInfo> *GetParticleSystem();
 
+    void *SetExplosion(Explosion *explosion);
+
     SkyBoxRenderer *GetSkyBoxRenderer();
 
     CubeRenderer *GetCubeRenderer();
@@ -33,6 +41,8 @@ private:
     float constTimeStep;
     SkyBoxRenderer *skyBoxRenderer;
     CubeRenderer *cubeRenderer;
+    Explosion *explosion;
+    Bomb *bomb;
 };
 
 

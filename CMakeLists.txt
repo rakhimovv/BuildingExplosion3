@@ -33,7 +33,7 @@ set(SOURCE_FILES
         src/Physics/ParticleSystem.h
         src/Physics/ParticleSystem.inl
         src/GameObjects/Block.cpp
-        src/GameObjects/Block.h src/GameObjects/GameSystem.cpp src/GameObjects/GameSystem.h src/GameObjects/Bomb.cpp src/GameObjects/Bomb.h)
+        src/GameObjects/Block.h src/GameObjects/GameSystem.cpp src/GameObjects/GameSystem.h src/GameObjects/Bomb.cpp src/GameObjects/Bomb.h src/GameObjects/Explosion.cpp src/GameObjects/Explosion.h)
 
 add_executable(${EXECUTABLE_NAME} ${SOURCE_FILES})
 

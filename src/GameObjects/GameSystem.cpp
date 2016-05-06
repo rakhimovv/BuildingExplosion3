@@ -6,13 +6,15 @@
 #include "../Physics/AosParticleSystem.h"
 
 // Границы мира
-const Vector3f minPoint = Vector3f(-1e1f, -1e1f, -1.0f);
+const Vector3f minPoint = Vector3f(-1e1f, -5.0f, -1.0f);
 const Vector3f maxPoint = Vector3f(1e1f, 1e1f, 1.0f);
 
 GameSystem::GameSystem(float constTimeStep) {
 
     this->constTimeStep = constTimeStep;
     this->particleSystem = new AosParticleSystem<ParticleInfo>(minPoint, maxPoint, constTimeStep);
+    this->explosion = 0;
+    this->bomb = 0;
 
     // Инициалиазация openGl для примитивов в классах обернута
     this->skyBoxRenderer = new SkyBoxRenderer();
@@ -30,6 +32,11 @@ GameSystem::GameSystem(float constTimeStep) {
     for (int i = 0; i < blocks.GetElementsCount(); i++) {
         // TODO нормально добавиться связи
     }
+
+    // Создадим бомбу
+    Bomb::Descriptor bombDesc;
+    bombDesc.pos = Vector3f(-3.0f + 1.0f + 0.5f, 1.0f, 0.0f);
+    bomb = new Bomb(bombDesc, this);
 }
 
 GameSystem::~GameSystem() {
@@ -38,6 +45,8 @@ GameSystem::~GameSystem() {
     }
     delete skyBoxRenderer;
     delete cubeRenderer;
+    delete bomb;
+    delete explosion;
 }
 
 ParticleSystem<ParticleInfo> *GameSystem::GetParticleSystem() {
@@ -50,6 +59,10 @@ CubeRenderer *GameSystem::GetCubeRenderer() {
 
 SkyBoxRenderer *GameSystem::GetSkyBoxRenderer() {
     return skyBoxRenderer;
+}
+
+void *GameSystem::SetExplosion(Explosion *explosion) {
+    this->explosion = explosion;
 }
 
 void GameSystem::Update(float dt) {
@@ -78,9 +91,33 @@ void GameSystem::Update(float dt) {
         blocks[objectIndex]->Update(dt);
     }
 
+    // Обновить бомбу
+    if (bomb && bomb->Exists()) {
+        //std::cout << "Update bomb\n";
+        bomb->Update(dt);
+    } else {
+        delete bomb;
+        bomb = 0;
+    }
+
+
+    // Взрыв
+    if (explosion && explosion->Exists()) {
+        explosion->Update(dt);
+    } else {
+        delete explosion;
+        explosion = 0;
+    }
+
     // Отрисовка
     this->skyBoxRenderer->render();
     for (size_t objectIndex = 0; objectIndex < blocks.GetElementsCount(); objectIndex++) {
         blocks[objectIndex]->Render();
+    }
+    if (bomb && bomb->Exists()) {
+        bomb->Render();
+    }
+    if (explosion && explosion->Exists()) {
+        explosion->Render();
     }
 }
