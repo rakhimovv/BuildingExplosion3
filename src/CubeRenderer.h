@@ -8,6 +8,7 @@
 
 #include "Cube.h"
 #include "shader.h"
+#include "GameObjects/Camera.h"
 
 class CubeRenderer
 {
@@ -16,7 +17,7 @@ public:
 
     ~CubeRenderer ();
 
-    void render(Cube& cube);
+    void render(Cube& cube, Camera * camera);
 
 private:
     GameShader cubeShader;
@@ -25,6 +26,7 @@ private:
     GLuint  vertexArrayObject;
     GLuint  texture;
 
+    const glm::mat4 projectionMatrix;
     const float LOCAL_EDGE_LENGTH = 2;
 
     int loadTexture(const GLchar * imagePath, GLuint * texture);

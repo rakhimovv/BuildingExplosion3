@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include "WindowSize.h"
 #include "GameObjects/GameSystem.h"
-
+#include <queue>
 
 int main() {
     sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "BuildingExplosion3", sf::Style::Default,
@@ -12,7 +12,7 @@ int main() {
     sf::Clock gameClock;
     float elapsedTime = 0.0f;
     float lastUpdateTime = 0.0f;
-    float constTimeStep = 1.0f / 30.0f;
+    float constTimeStep = 1.0f / 60.0f;
 
     glewExperimental = GL_TRUE;
     glewInit();
@@ -27,16 +27,29 @@ int main() {
 
     LineRenderer lineRenderer;
 
+    // Очередь для нажатых клавиш (т.к. у нас есть промежутки между апдейтами)
+    std::queue<sf::Keyboard::Key> buttonsCache;
+
     bool isRunning = true;
     while (isRunning) {
         sf::Event windowEvent;
 
         while (window.pollEvent(windowEvent)) {
-            if (windowEvent.type == sf::Event::Closed ||
-                (windowEvent.type == sf::Event::KeyPressed && windowEvent.key.code == sf::Keyboard::Escape)) {
-                isRunning = false;
+            switch(windowEvent.type) {
+                case sf::Event::Closed:
+                    isRunning = false;
+                    break;
+                case sf::Event::KeyPressed:
+                    buttonsCache.push(windowEvent.key.code);
+                    if (windowEvent.key.code == sf::Keyboard::Escape) {
+                        isRunning = false;
+                    }
+                    break;
+                default:
+                    break;
             }
         }
+
 
         float currTime = gameClock.getElapsedTime().asSeconds();
         if (currTime - lastUpdateTime > constTimeStep) {
@@ -44,7 +57,7 @@ int main() {
             elapsedTime += constTimeStep;
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-            gameSystem.Update(constTimeStep);
+            gameSystem.Update(constTimeStep, buttonsCache);
 
             window.display();
         }

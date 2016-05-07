@@ -9,6 +9,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "GameObjects/Camera.h"
 #include "shader.h"
 
 class SkyBoxRenderer
@@ -16,11 +17,13 @@ class SkyBoxRenderer
 public:
     SkyBoxRenderer();
 
-    void render();
+    void render(Camera * gameCamera);
 
 private:
     std::vector<GLfloat> cubeVertices;
     GameShader cubeMapShader;
+    glm::mat4 modelMatrix;
+    glm::mat4 projectionMatrix;
     std::vector<const GLchar *> boxFaces;
     GLuint cubeMapTexture;
     GLuint skyboxVAO;

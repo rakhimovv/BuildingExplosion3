@@ -5,7 +5,7 @@
 #ifndef OPENGL_WINDOWSIZE_H
 #define OPENGL_WINDOWSIZE_H
 
-const int WIDTH = 2500;
-const int HEIGHT = 1500;
+const int WIDTH = 800;
+const int HEIGHT = 600;
 
 #endif //OPENGL_WINDOWSIZE_H

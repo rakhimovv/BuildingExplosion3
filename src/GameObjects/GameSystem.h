@@ -5,7 +5,8 @@
 #ifndef BUILDINGEXPLOSION3_GAMESYSTEM_H
 #define BUILDINGEXPLOSION3_GAMESYSTEM_H
 
-
+#include <queue>
+#include <SFML/Window.hpp>
 #include "Block.h"
 #include "../Utils/CachedArray.h"
 #include "../CubeRenderer.h"
@@ -17,8 +18,9 @@
 class Block;
 
 class Bomb;
-
 class Explosion;
+
+class Camera;
 
 class GameSystem {
 public:
@@ -26,7 +28,7 @@ public:
 
     ~GameSystem();
 
-    void Update(float dt);
+    void Update(float dt, std::queue<sf::Keyboard::Key>& pressedButtons);
 
     ParticleSystem<ParticleInfo> *GetParticleSystem();
 
@@ -36,6 +38,8 @@ public:
 
     CubeRenderer *GetCubeRenderer();
 
+    Camera * GetCamera();
+
 private:
     CachedArray<Block *> blocks;
     ParticleSystem<ParticleInfo> *particleSystem;
@@ -44,6 +48,7 @@ private:
     CubeRenderer *cubeRenderer;
     LineRenderer *lineRenderer;
     Explosion *explosion;
+    Camera * camera;
     Bomb *bomb;
 };
 

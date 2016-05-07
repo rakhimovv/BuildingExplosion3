@@ -48,7 +48,7 @@ void Block::Render() {
     // TODO додумать как отрисовывать блок
     Vector3f pos = particleHandles[0].GetPos();
     Cube cube(glm::vec3(pos.x, pos.y, pos.z), edgeLength); // TODO - quaternions
-    owner->GetCubeRenderer()->render(cube);
+    owner->GetCubeRenderer()->render(cube, owner->GetCamera());
 }
 
 bool Block::Exists() {

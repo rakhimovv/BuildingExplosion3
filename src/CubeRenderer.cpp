@@ -60,8 +60,10 @@ GLfloat vertices[] = {
 
 CubeRenderer::CubeRenderer():
         cubeShader("data/shaders/cubevertex.frag", "data/shaders/cubefragment.frag"),
-        cubeVertices(std::begin(vertices), std::end(vertices))
+        cubeVertices(std::begin(vertices), std::end(vertices)),
+        projectionMatrix(glm::perspective(45.0f, (GLfloat) WIDTH / (GLfloat) HEIGHT, 0.1f, 100.0f))
 {
+
     glGenVertexArrays(1, &vertexArrayObject);
     glGenBuffers(1, &vertexBufferObject);
 
@@ -91,15 +93,11 @@ CubeRenderer::~CubeRenderer()
     glDeleteBuffers(1, &vertexBufferObject);
 }
 
-void CubeRenderer::render(Cube& cube)
+void CubeRenderer::render(Cube& cube, Camera * camera)
 {
     cubeShader.use();
 
-    glm::mat4 model, view, projection;
-
-    view = glm::translate(view, glm::vec3(0.0f, 0.0f, -4.0f));
-    view = glm::rotate(view, glm::radians(30.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-    projection = glm::perspective(45.0f, (GLfloat)WIDTH / (GLfloat)HEIGHT, 0.1f, 100.0f);
+    glm::mat4 model;
 
     float cubeScaler = cube.edgeLength() / LOCAL_EDGE_LENGTH;
     model = glm::translate(model, cube.getCenter());
@@ -110,8 +108,8 @@ void CubeRenderer::render(Cube& cube)
     GLint projLoc = glGetUniformLocation(cubeShader.getProgram(), "projection");
     GLint modelLoc = glGetUniformLocation(cubeShader.getProgram(), "model");
     // Pass them to the shaders
-    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-    glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
+    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(camera->GetViewMatrix()));
+    glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projectionMatrix));
     glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 
     glBindVertexArray(vertexArrayObject);

@@ -14,8 +14,9 @@ GameSystem::GameSystem(float constTimeStep) {
 
     this->constTimeStep = constTimeStep;
     this->particleSystem = new AosParticleSystem<ParticleInfo>(minPoint, maxPoint, constTimeStep);
-    this->explosion = 0;
-    this->bomb = 0;
+    this->explosion = nullptr;
+    this->bomb = nullptr;
+    this->camera = new Camera();
 
     // Инициалиазация openGl для примитивов в классах обернута
     this->skyBoxRenderer = new SkyBoxRenderer;
@@ -86,10 +87,12 @@ GameSystem::~GameSystem() {
     for (size_t blockIndex = 0; blockIndex < blocks.GetElementsCount(); blockIndex++) {
         delete blocks[blockIndex];
     }
+
     delete skyBoxRenderer;
     delete cubeRenderer;
 //    delete lineRenderer;
     delete bomb;
+    delete camera;
     delete explosion;
 }
 
@@ -105,11 +108,15 @@ SkyBoxRenderer *GameSystem::GetSkyBoxRenderer() {
     return skyBoxRenderer;
 }
 
+Camera *GameSystem::GetCamera()
+{
+    return camera;
+}
 void GameSystem::SetExplosion(Explosion *explosion) {
     this->explosion = explosion;
 }
 
-void GameSystem::Update(float dt) {
+void GameSystem::Update(float dt, std::queue<sf::Keyboard::Key>& pressedButtons) {
     // Удаляем несуществующие объекты
     for (size_t blockIndex = 0; blockIndex < blocks.GetElementsCount(); blockIndex++) {
         if (!blocks[blockIndex]->Exists()) {
@@ -153,9 +160,11 @@ void GameSystem::Update(float dt) {
     }
 
 //     Отрисовка
+    camera->MoveCamera(pressedButtons);
+
     glm::vec3 p0(0.0f, 0.0f, 0.0f);
     glm::vec3 p1(0.0f, 1.0f, 0.0f);
-    this->skyBoxRenderer->render();
+    this->skyBoxRenderer->render(this->camera);
     this->lineRenderer->render(p0, p1);
 //    this->lineRenderer->render(new glm::vec3(0.0f, 0.0f, 0.0f), new glm::vec3(0.0f, 1.0f, 0.0f));
     for (size_t objectIndex = 0; objectIndex < blocks.GetElementsCount(); objectIndex++) {

@@ -40,7 +40,7 @@ void Bomb::Render() {
     // TODO
     Vector3f pos = particleHandle.GetPos();
     Cube cube(glm::vec3(pos.x, pos.y, pos.z), edgeLength); // TODO - quaternions
-    owner->GetCubeRenderer()->render(cube);
+    owner->GetCubeRenderer()->render(cube, owner->GetCamera());
 }
 
 bool Bomb::Exists() {

@@ -57,6 +57,8 @@ SkyBoxRenderer::SkyBoxRenderer():
         cubeVertices(std::begin(cube_vertices), std::end(cube_vertices)),
         cubeMapShader("data/shaders/skyboxvertex.frag", "data/shaders/skyboxfragment.frag")
 {
+    projectionMatrix = glm::perspective(45.0f, (GLfloat)WIDTH / (GLfloat)HEIGHT, 0.01f, 500.0f);
+
     boxFaces.push_back("data/hills_rt.tga");
     boxFaces.push_back("data/hills_lf.tga");
     boxFaces.push_back("data/hills_up.tga");
@@ -81,21 +83,21 @@ SkyBoxRenderer::SkyBoxRenderer():
     loadCubeMap();
 }
 
-void SkyBoxRenderer::render()
+void SkyBoxRenderer::render(Camera * camera)
 {
     glDepthMask(GL_FALSE);
     cubeMapShader.use();
-
-    glm::mat4 view, projection;
 //    view = glm::translate(view, glm::vec3(0.0f, 0.0f, -4.0f));
 //    view = glm::rotate(view, glm::radians(30.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-    projection = glm::perspective(45.0f, (GLfloat)WIDTH / (GLfloat)HEIGHT, 0.1f, 100.0f);
+//    projection = glm::perspective(45.0f, (GLfloat)WIDTH / (GLfloat)HEIGHT, 0.1f, 100.0f);
 
     GLuint viewLoc = glGetUniformLocation(cubeMapShader.getProgram(), "view");
+    GLuint modelLoc = glGetUniformLocation(cubeMapShader.getProgram(), "model");
     GLuint projectionLoc = glGetUniformLocation(cubeMapShader.getProgram(), "projection");
 
-    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-    glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
+    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelMatrix));
+    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(camera->GetViewMatrix()));
+    glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projectionMatrix));
 
     glBindVertexArray(skyboxVAO);
 

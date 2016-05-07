@@ -11,8 +11,11 @@
 #include "../Physics/ParticleSystem.h"
 #include "../Physics/ParticleInfo.h"
 #include "GameSystem.h"
+#include "Camera.h"
 
 class GameSystem;
+
+class Camera;
 
 class Block {
 public:
@@ -37,6 +40,7 @@ public:
 
 private:
     GameSystem *owner;
+    Camera * camera;
     std::vector<ParticleHandle<ParticleInfo>> particleHandles;
     float edgeLength;
     bool exists;
