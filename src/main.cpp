@@ -25,6 +25,8 @@ int main() {
 
     GameSystem gameSystem(constTimeStep);
 
+    LineRenderer lineRenderer;
+
     bool isRunning = true;
     while (isRunning) {
         sf::Event windowEvent;

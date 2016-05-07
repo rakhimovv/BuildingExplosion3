@@ -5,6 +5,7 @@
 #include "GameSystem.h"
 #include "../Physics/AosParticleSystem.h"
 
+class LineRenderer;
 // Границы мира
 const Vector3f minPoint = Vector3f(-15.0f, -1.0f, -15.0f);
 const Vector3f maxPoint = Vector3f(15.0f, 15.0f, 15.0f);
@@ -17,8 +18,9 @@ GameSystem::GameSystem(float constTimeStep) {
     this->bomb = 0;
 
     // Инициалиазация openGl для примитивов в классах обернута
-    this->skyBoxRenderer = new SkyBoxRenderer();
-    this->cubeRenderer = new CubeRenderer();
+    this->skyBoxRenderer = new SkyBoxRenderer;
+    this->cubeRenderer = new CubeRenderer;
+    this->lineRenderer = new LineRenderer;
 
 
     // Создаем блоки
@@ -88,6 +90,7 @@ GameSystem::~GameSystem() {
     }
     delete skyBoxRenderer;
     delete cubeRenderer;
+//    delete lineRenderer;
     delete bomb;
     delete explosion;
 }
@@ -152,8 +155,12 @@ void GameSystem::Update(float dt) {
         explosion = 0;
     }
 
-    // Отрисовка
+//     Отрисовка
+    glm::vec3 p0(0.0f, 0.0f, 0.0f);
+    glm::vec3 p1(0.0f, 1.0f, 0.0f);
     this->skyBoxRenderer->render();
+    this->lineRenderer->render(p0, p1);
+//    this->lineRenderer->render(new glm::vec3(0.0f, 0.0f, 0.0f), new glm::vec3(0.0f, 1.0f, 0.0f));
     for (size_t objectIndex = 0; objectIndex < blocks.GetElementsCount(); objectIndex++) {
         blocks[objectIndex]->Render();
         /*

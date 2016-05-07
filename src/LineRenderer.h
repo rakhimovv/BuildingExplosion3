@@ -10,6 +10,7 @@
 #include <vector>
 #include <glm/glm.hpp>
 #include <assert.h>
+#include "shader.h"
 
 class LineRenderer
 {
@@ -18,9 +19,13 @@ public:
 
     ~LineRenderer();
 
-    void render(glm::vec3 * p0, glm::vec3 * p1);
+    void render(const glm::vec3& p0, const glm::vec3& p1);
 
 private:
     GLuint vertexBufferObject;
     GLuint vertexArrayObject;
+    GameShader lineShader;
+    std::vector<GLfloat> lineVertices;
+
+    const float LOCALSPACE_LENGTH;
 };
