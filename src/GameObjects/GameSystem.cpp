@@ -6,6 +6,7 @@
 #include "../Physics/AosParticleSystem.h"
 
 class LineRenderer;
+
 // Границы мира
 const Vector3f minPoint = Vector3f(-15.0f, -1.0f, -15.0f);
 const Vector3f maxPoint = Vector3f(15.0f, 15.0f, 15.0f);
@@ -23,17 +24,7 @@ GameSystem::GameSystem(float constTimeStep) {
     this->cubeRenderer = new CubeRenderer;
     this->lineRenderer = new LineRenderer;
 
-
-    // Создаем блоки
     /*
-    for (int i = 0; i < 2; i++) {
-        Block::Descriptor blockDesc;
-        // TODO как задавать блоки
-        float edge = 0.25f;
-        blockDesc.vertexPositions.push_back(Vector3f(-1.0f + edge * i, 1.0f, 0.0f));
-        blocks.Add(new Block(blockDesc, this));
-    }
-
     // Добавим связи между блоками (не внутри них!)
     for (int i = 0; i < blocks.GetElementsCount(); i++) {
         // TODO нормально добавиться связи
@@ -45,6 +36,8 @@ GameSystem::GameSystem(float constTimeStep) {
     }
     */
 
+    // Улетают в бесконечность, потому что нет гравитации и границ мира, кроме нижней
+
     //h этажей по n кубиков
     int h = 5;
     int n = 10;
@@ -55,7 +48,8 @@ GameSystem::GameSystem(float constTimeStep) {
     for (int i = 0; i < h; i++) {
         for (int j = 0; j < n; j++) {
             Block::Descriptor blockDesc;
-            Vector3f pos = Vector3f(-1.0f, minPoint.y + edge / 2.0f + i * (edge + empty), -1.0f + edge / 2.0f + j * (edge + empty));
+            Vector3f pos = Vector3f(-1.0f, minPoint.y + edge / 2.0f + i * (edge + empty),
+                                    -1.0f + edge / 2.0f + j * (edge + empty));
             //pos.Print(); std::cout << std::endl;
             blockDesc.vertexPositions.push_back(pos);
             blockDesc.edgeLength = edge;
@@ -67,8 +61,9 @@ GameSystem::GameSystem(float constTimeStep) {
     for (int i = 0; i < h; i++) {
         for (int j = 0; j < n; j++) {
             Block::Descriptor blockDesc;
-            Vector3f pos = Vector3f(-1.0f + 3 * edge, minPoint.y + edge / 2.0f + i * (edge + empty), -1.0f + edge / 2.0f + j * (edge + empty));
-            pos.Print(); std::cout << std::endl;
+            Vector3f pos = Vector3f(-1.0f + 3 * edge, minPoint.y + edge / 2.0f + i * (edge + empty),
+                                    -1.0f + edge / 2.0f + j * (edge + empty));
+            //pos.Print(); std::cout << std::endl;
             blockDesc.vertexPositions.push_back(pos);
             blockDesc.edgeLength = edge;
             blocks.Add(new Block(blockDesc, this));
@@ -79,7 +74,8 @@ GameSystem::GameSystem(float constTimeStep) {
     // Создадим бомбу
     Bomb::Descriptor bombDesc;
     bombDesc.edgeLength = 2.0f * edge;
-    bombDesc.pos = Vector3f(-1.0f + 1.5f * edge, minPoint.y + edge / 2.0f + h / 2.0f * (edge + empty), -1.0f + edge / 2.0f + n / 2.0f * (edge + empty));
+    bombDesc.pos = Vector3f(-1.0f + 1.5f * edge, minPoint.y + edge / 2.0f + h / 2.0f * (edge + empty),
+                            -1.0f + edge / 2.0f + n / 2.0f * (edge + empty));
     bomb = new Bomb(bombDesc, this);
 }
 
@@ -155,6 +151,7 @@ void GameSystem::Update(float dt, std::queue<sf::Keyboard::Key>& pressedButtons)
     if (explosion && explosion->Exists()) {
         explosion->Update(dt);
     } else {
+        //std::cout << "нет взрыва\n";
         delete explosion;
         explosion = 0;
     }
@@ -169,6 +166,13 @@ void GameSystem::Update(float dt, std::queue<sf::Keyboard::Key>& pressedButtons)
 //    this->lineRenderer->render(new glm::vec3(0.0f, 0.0f, 0.0f), new glm::vec3(0.0f, 1.0f, 0.0f));
     for (size_t objectIndex = 0; objectIndex < blocks.GetElementsCount(); objectIndex++) {
         blocks[objectIndex]->Render();
+        /*
+        if (!explosion || !explosion->Exists()) {
+            std::cout << "acc: ";
+            blocks[objectIndex]->GetParticleHandle(0)->GetAcceleration().Print();
+            std::cout << "\n";
+        }
+        */
     }
     if (bomb && bomb->Exists()) {
         bomb->Render();

@@ -22,6 +22,7 @@ void Explosion::Update(float dt) {
     this->elapsedLifetime -= dt;
     if (this->elapsedLifetime < 0.0f) {
         this->exists = false;
+        std::cout << "КОНЕЦ ВЗРЫВА!\n";
     }
 
     // Обработка взрыва
