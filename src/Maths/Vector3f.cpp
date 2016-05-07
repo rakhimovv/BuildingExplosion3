@@ -44,7 +44,7 @@ float Vector3f::Length() {
 }
 
 void Vector3f::Print() {
-    std::cout << "x: " << this->x << "y: " << this->y << "z: " << this->z;
+    std::cout << "x: " << this->x << " y: " << this->y << " z: " << this->z;
 }
 
 Vector3f Vector3f::xAxis() {

@@ -28,7 +28,7 @@ void Bomb::Update(float dt) {
         std::cout << "ВЗРЫВ!\n";
 
         Explosion::Descriptor explosionDesc;
-        explosionDesc.maxRadius = 15.0f;
+        explosionDesc.maxRadius = 1.0f;
         explosionDesc.totalLifetime = 10.0f;
         explosionDesc.pos = particleHandle.GetPos();
 

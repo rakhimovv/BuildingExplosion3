@@ -42,6 +42,8 @@ GameSystem::GameSystem(float constTimeStep) {
     }
     */
 
+    // Улетают в бесконечность, потому что нет гравитации и границ мира, кроме нижней
+
     //h этажей по n кубиков
     int h = 5;
     int n = 10;
@@ -65,7 +67,7 @@ GameSystem::GameSystem(float constTimeStep) {
         for (int j = 0; j < n; j++) {
             Block::Descriptor blockDesc;
             Vector3f pos = Vector3f(-1.0f + 3 * edge, minPoint.y + edge / 2.0f + i * (edge + empty), -1.0f + edge / 2.0f + j * (edge + empty));
-            pos.Print(); std::cout << std::endl;
+            //pos.Print(); std::cout << std::endl;
             blockDesc.vertexPositions.push_back(pos);
             blockDesc.edgeLength = edge;
             blocks.Add(new Block(blockDesc, this));
@@ -145,6 +147,7 @@ void GameSystem::Update(float dt) {
     if (explosion && explosion->Exists()) {
         explosion->Update(dt);
     } else {
+        //std::cout << "нет взрыва\n";
         delete explosion;
         explosion = 0;
     }
@@ -153,6 +156,13 @@ void GameSystem::Update(float dt) {
     this->skyBoxRenderer->render();
     for (size_t objectIndex = 0; objectIndex < blocks.GetElementsCount(); objectIndex++) {
         blocks[objectIndex]->Render();
+        /*
+        if (!explosion || !explosion->Exists()) {
+            std::cout << "acc: ";
+            blocks[objectIndex]->GetParticleHandle(0)->GetAcceleration().Print();
+            std::cout << "\n";
+        }
+        */
     }
     if (bomb && bomb->Exists()) {
         bomb->Render();
