@@ -1,0 +1,23 @@
+{
+  "shaders": {
+    "cubeFragment" : "data/shaders/cubefragment.frag",
+    "cubeVertex": "data/shaders/cubevertex.frag",
+    "lineFragment": "data/shaders/linefragment.frag",
+    "lineVertex": "data/shaders/linevertex.frag",
+    "skyboxFragment": "data/shaders/skyboxfragment.frag",
+    "skyboxVertex": "data/shaders/skyboxvertex.frag"
+  },
+  "textures": {
+    "cubeTexture" : "data/wall.jpg",
+    "skyboxBackTexture" : "data/hills_bk.tga",
+    "skyboxFrontTexture" : "data/hills_ft.tga",
+    "skyboxLeftTexture" : "data/hills_lf.tga",
+    "skyboxRightTexture" : "data/hills_rt.tga",
+    "skyboxUpTexture": "data/hills_up.tga",
+    "skyboxBottomTexture": "data/hills_dn.tga"
+  },
+  "camera": {
+    "cameraSpeed" : 95.0,
+    "cameraSpeedStep": 25.0
+  }
+}
