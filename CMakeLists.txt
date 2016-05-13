@@ -19,6 +19,9 @@ set(SOURCE_FILES
         src/CubeRenderer.cpp
         src/shader.h
         src/shader.cpp
+        dependencies/jsoncpp.cpp
+        dependencies/json/json.h
+        dependencies/json/json-forwards.h
         src/FloorRenderer.h
         src/SkyboxRenderer.h
         src/SkyboxRenderer.cpp
@@ -33,7 +36,20 @@ set(SOURCE_FILES
         src/Physics/ParticleSystem.h
         src/Physics/ParticleSystem.inl
         src/GameObjects/Block.cpp
-        src/GameObjects/Block.h src/GameObjects/GameSystem.cpp src/GameObjects/GameSystem.h src/GameObjects/Bomb.cpp src/GameObjects/Bomb.h src/GameObjects/Explosion.cpp src/GameObjects/Explosion.h src/LineRenderer.h src/LineRenderer.cpp src/GameObjects/Camera.h src/GameObjects/Camera.cpp)
+        src/GameObjects/Block.h
+        src/GameObjects/GameSystem.cpp
+        src/GameObjects/GameSystem.h
+        src/GameObjects/Bomb.cpp
+        src/GameObjects/Bomb.h
+        src/GameObjects/Explosion.cpp
+        src/GameObjects/Explosion.h
+        src/LineRenderer.h
+        src/LineRenderer.cpp
+        src/GameObjects/Camera.h
+        src/GameObjects/Camera.cpp
+        src/GameParameters.cpp
+        src/GameParameters.h
+        )
 
 add_executable(${EXECUTABLE_NAME} ${SOURCE_FILES})
 

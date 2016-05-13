@@ -5,6 +5,9 @@
 #include "GameObjects/GameSystem.h"
 #include <queue>
 
+#include "../dependencies/json/json.h"
+#include "GameParameters.h"
+
 int main() {
     sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "BuildingExplosion3", sf::Style::Default,
                             sf::ContextSettings(32, 8, 3, 3, 0));
@@ -24,6 +27,8 @@ int main() {
     //GameShader cubeShader("data/shaders/cubevertex.frag", "data/shaders/cubefragment.frag");
 
     GameSystem gameSystem(constTimeStep);
+
+    GameParameters gameParameters("data/gameconfig.json");
 
     LineRenderer lineRenderer;
 
