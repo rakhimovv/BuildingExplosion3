@@ -14,6 +14,7 @@
 #include "../LineRenderer.h"
 #include "Explosion.h"
 #include "Bomb.h"
+#include "../Physics/AosParticleSystem.h"
 
 class Block;
 
@@ -42,7 +43,7 @@ public:
 
 private:
     CachedArray<Block *> blocks;
-    ParticleSystem<ParticleInfo> *particleSystem;
+    AosParticleSystem<ParticleInfo> *particleSystem;
     float constTimeStep;
     SkyBoxRenderer *skyBoxRenderer;
     CubeRenderer *cubeRenderer;

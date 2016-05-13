@@ -72,7 +72,7 @@ CubeRenderer::CubeRenderer():
     glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);
 
     std::cout << "cubeVertices.size * sizeof(GLfloat) = " << cubeVertices.size() * sizeof(GLfloat) << std::endl;
-    glBufferData(GL_ARRAY_BUFFER, cubeVertices.size() * sizeof(GLfloat), &cubeVertices[0], GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, cubeVertices.size() * sizeof(GLfloat), &cubeVertices[0], GL_STATIC_DRAW);
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)0);
     glEnableVertexAttribArray(0);
@@ -93,7 +93,9 @@ CubeRenderer::~CubeRenderer()
     glDeleteBuffers(1, &vertexBufferObject);
 }
 
-void CubeRenderer::render(Cube& cube, Camera * camera)
+
+
+void CubeRenderer::render(Cube& cube, Camera * camera)//Coords3f coords, Camera * camera)
 {
     cubeShader.use();
 

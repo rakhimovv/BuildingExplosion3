@@ -198,3 +198,8 @@ void AosParticleSystem<UserInfo>::SetBounds(Vector3f minPoint, Vector3f maxPoint
     this->minPoint = minPoint;
     this->maxPoint = maxPoint;
 }
+
+template<typename UserInfo>
+std::vector<AosLink<UserInfo> > AosParticleSystem<UserInfo>::GetLinks() {
+    return this->links;
+}
