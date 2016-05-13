@@ -43,8 +43,6 @@ set(SOURCE_FILES
         src/GameObjects/Bomb.h
         src/GameObjects/Explosion.cpp
         src/GameObjects/Explosion.h
-        src/LineRenderer.h
-        src/LineRenderer.cpp
         src/GameObjects/Camera.h
         src/GameObjects/Camera.cpp
         src/GameParameters.cpp

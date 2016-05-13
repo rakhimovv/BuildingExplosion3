@@ -179,7 +179,7 @@ void GameSystem::Update(float dt, std::queue<sf::Keyboard::Key>& pressedButtons)
         blocks[objectIndex]->Render();
     }
 
-    /* TODO КРАШ
+    //* TODO КРАШ
     glm::vec3 color = glm::vec3(1.0f, 0.0f, 0.0f);
     for (size_t i = 0; i < this->particleSystem->GetLinks().size(); i++) {
         size_t particleId0 = this->particleSystem->GetLinks()[i].particleId0;
@@ -189,9 +189,10 @@ void GameSystem::Update(float dt, std::queue<sf::Keyboard::Key>& pressedButtons)
         glm::vec3 p0(pos0.x, pos0.y, pos0.z);
         glm::vec3 p1(pos1.x, pos1.y, pos1.z);
         Line line(p0, p1, color, gameParameters);
-        this->lineRenderer->render(line, *this->camera);
+        line.render(*this->camera);
+        //this->lineRenderer->render(line, *this->camera);
     }
-    */
+    //*/
 
     if (bomb && bomb->Exists()) {
         bomb->Render();

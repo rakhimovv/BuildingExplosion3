@@ -23,7 +23,7 @@ void AosLink<UserInfo>::Solve(AosParticleSystem<UserInfo> *sys) {
     AosParticle<UserInfo> *p0 = &(sys->GetParticleById(particleId0));
     AosParticle<UserInfo> *p1 = &(sys->GetParticleById(particleId1));
     Vector3f delta = p1->pos - p0->pos;
-    std::cout << "delta: " << delta.Length() << "\n";
+    //std::cout << "delta: " << delta.Length() << "\n";
     Vector3f dir = delta * (1.0f / delta.Length());
 
     //if (delta.Length() < 2.5f) {

@@ -11,7 +11,6 @@
 #include "../Utils/CachedArray.h"
 #include "../CubeRenderer.h"
 #include "../SkyboxRenderer.h"
-#include "../LineRenderer.h"
 #include "../GameParameters.h"
 #include "Explosion.h"
 #include "Bomb.h"
@@ -50,7 +49,6 @@ private:
     float constTimeStep;
     SkyBoxRenderer * skyBoxRenderer;
     CubeRenderer * cubeRenderer;
-    LineRenderer * lineRenderer;
     GameParameters gameParameters;
     Explosion * explosion;
     Camera * camera;
