@@ -5,7 +5,9 @@
     "lineFragment": "data/shaders/linefragment.frag",
     "lineVertex": "data/shaders/linevertex.frag",
     "skyboxFragment": "data/shaders/skyboxfragment.frag",
-    "skyboxVertex": "data/shaders/skyboxvertex.frag"
+    "skyboxVertex": "data/shaders/skyboxvertex.frag",
+    "sphereVertex": "data/shaders/spherevertex.frag",
+    "sphereFragment": "data/shaders/spherefragment.frag"
   },
   "textures": {
     "cubeTexture" : "data/wall.jpg",
@@ -17,7 +19,7 @@
     "skyboxBottomTexture": "data/hills_dn.tga"
   },
   "camera": {
-    "cameraSpeed" : 95.0,
-    "cameraSpeedStep": 25.0
+    "cameraSpeed" : 0.0125,
+    "cameraSpeedStep": 0.0025
   }
 }
