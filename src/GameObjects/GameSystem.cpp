@@ -28,7 +28,7 @@ GameSystem::GameSystem(float constTimeStep): gameParameters("data/gameconfig.jso
     glm::vec3 color = glm::vec3(1.0f, 0.0f, 0.0f);
     glm::vec3 center = glm::vec3(0.0f, 0.0f, 0.0f);
 
-    this->sphere = new Sphere(&center, 0.5f, &color, gameParameters);
+//    this->sphere = new Sphere(&center, 0.5f, &color, gameParameters);
 
     /*
     // Добавим связи между блоками (не внутри них!)
@@ -95,9 +95,6 @@ GameSystem::~GameSystem() {
     delete bomb;
     delete camera;
     delete explosion;
-    delete sphere;
-
-//    delete line;
 }
 
 ParticleSystem<ParticleInfo> *GameSystem::GetParticleSystem() {

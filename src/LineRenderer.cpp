@@ -47,7 +47,6 @@ LineRenderer::~LineRenderer()
 
 void LineRenderer::render(Line& line, Camera& camera)
 {
-    line.dump();
     lineVertices.insert(lineVertices.end(), line.getVertices().begin(), line.getVertices().end());
 
     glm::mat4 model;
