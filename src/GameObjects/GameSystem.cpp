@@ -166,7 +166,7 @@ void GameSystem::Update(float dt, std::queue<sf::Keyboard::Key>& pressedButtons)
 
     this->skyBoxRenderer->render(this->camera);
 
-    this->sphere->render(*this->camera);
+//    this->sphere->render(*this->camera);
 
 //    for (size_t objectIndex = 0; objectIndex < blocks.GetElementsCount(); objectIndex++) {
 //        blocks[objectIndex]->Render();
@@ -184,5 +184,5 @@ void GameSystem::Update(float dt, std::queue<sf::Keyboard::Key>& pressedButtons)
 //    }
 //    if (explosion && explosion->Exists()) {
 //        explosion->Render();
-//    }
+//    } j
 }

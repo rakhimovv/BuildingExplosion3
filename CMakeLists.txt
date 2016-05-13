@@ -49,6 +49,8 @@ set(SOURCE_FILES
         src/GameObjects/Camera.cpp
         src/GameParameters.cpp
         src/GameParameters.h
+        src/GameObjects/Line.h
+        src/GameObjects/Line.cpp
         )
 
 add_executable(${EXECUTABLE_NAME} ${SOURCE_FILES})
