@@ -78,6 +78,8 @@ public:
 
     AosParticle<UserInfo> &GetParticleById(size_t particleId);
 
+    std::vector<AosLink<UserInfo> > GetLinks();
+
 private:
     float dt;
     CachedArray<AosParticle<UserInfo> > particles;
