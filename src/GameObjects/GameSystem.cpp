@@ -4,6 +4,7 @@
 
 #include "GameSystem.h"
 #include "../Physics/AosParticleSystem.h"
+#include "Line.h"
 
 class LineRenderer;
 
@@ -11,18 +12,23 @@ class LineRenderer;
 const Vector3f minPoint = Vector3f(-15.0f, -1.0f, -15.0f);
 const Vector3f maxPoint = Vector3f(15.0f, 15.0f, 15.0f);
 
-GameSystem::GameSystem(float constTimeStep) {
+GameSystem::GameSystem(float constTimeStep): gameParameters("data/gameconfig.json") {
+    // load config
 
     this->constTimeStep = constTimeStep;
     this->particleSystem = new AosParticleSystem<ParticleInfo>(minPoint, maxPoint, constTimeStep);
     this->explosion = nullptr;
     this->bomb = nullptr;
-    this->camera = new Camera();
+    this->camera = new Camera(gameParameters);
 
     // Инициалиазация openGl для примитивов в классах обернута
-    this->skyBoxRenderer = new SkyBoxRenderer;
-    this->cubeRenderer = new CubeRenderer;
-    this->lineRenderer = new LineRenderer;
+    this->skyBoxRenderer = new SkyBoxRenderer(gameParameters);
+    this->cubeRenderer = new CubeRenderer(gameParameters);
+
+    glm::vec3 color = glm::vec3(1.0f, 0.0f, 0.0f);
+    glm::vec3 center = glm::vec3(0.0f, 0.0f, 0.0f);
+
+    this->sphere = new Sphere(&center, 0.5f, &color, gameParameters);
 
     /*
     // Добавим связи между блоками (не внутри них!)
@@ -86,10 +92,12 @@ GameSystem::~GameSystem() {
 
     delete skyBoxRenderer;
     delete cubeRenderer;
-//    delete lineRenderer;
     delete bomb;
     delete camera;
     delete explosion;
+    delete sphere;
+
+//    delete line;
 }
 
 ParticleSystem<ParticleInfo> *GameSystem::GetParticleSystem() {
@@ -159,25 +167,25 @@ void GameSystem::Update(float dt, std::queue<sf::Keyboard::Key>& pressedButtons)
 //     Отрисовка
     camera->MoveCamera(pressedButtons);
 
-    glm::vec3 p0(0.0f, 0.0f, 0.0f);
-    glm::vec3 p1(0.0f, 1.0f, 0.0f);
     this->skyBoxRenderer->render(this->camera);
-    this->lineRenderer->render(p0, p1);
-//    this->lineRenderer->render(new glm::vec3(0.0f, 0.0f, 0.0f), new glm::vec3(0.0f, 1.0f, 0.0f));
-    for (size_t objectIndex = 0; objectIndex < blocks.GetElementsCount(); objectIndex++) {
-        blocks[objectIndex]->Render();
-        /*
-        if (!explosion || !explosion->Exists()) {
-            std::cout << "acc: ";
-            blocks[objectIndex]->GetParticleHandle(0)->GetAcceleration().Print();
-            std::cout << "\n";
-        }
-        */
-    }
-    if (bomb && bomb->Exists()) {
-        bomb->Render();
-    }
-    if (explosion && explosion->Exists()) {
-        explosion->Render();
-    }
+
+    this->sphere->render(*this->camera);
+
+//    for (size_t objectIndex = 0; objectIndex < blocks.GetElementsCount(); objectIndex++) {
+//        blocks[objectIndex]->Render();
+//        /*z
+//        if (!explosion || !explosion->Exists()) {
+//            std::cout << "acc: ";
+//            blocks[objectIndex]->GetParticleHandle(0)->GetAcceleration().Print();
+//            std::cout << "\n";
+//        }
+//        */
+//    }
+
+//    if (bomb && bomb->Exists()) {
+//        bomb->Render();
+//    }
+//    if (explosion && explosion->Exists()) {
+//        explosion->Render();
+//    }
 }

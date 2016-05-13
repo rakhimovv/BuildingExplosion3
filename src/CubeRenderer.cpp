@@ -58,8 +58,8 @@ GLfloat vertices[] = {
         -1.0f,  1.0f, -1.0f,  0.0f, 1.0f
 };
 
-CubeRenderer::CubeRenderer():
-        cubeShader("data/shaders/cubevertex.frag", "data/shaders/cubefragment.frag"),
+CubeRenderer::CubeRenderer(GameParameters& gameParameters):
+        cubeShader(gameParameters.GetCubeVertexShader().c_str(), gameParameters.GetCubeFragmentShader().c_str()),
         cubeVertices(std::begin(vertices), std::end(vertices)),
         projectionMatrix(glm::perspective(45.0f, (GLfloat) WIDTH / (GLfloat) HEIGHT, 0.1f, 100.0f))
 {
@@ -82,7 +82,7 @@ CubeRenderer::CubeRenderer():
 
     glBindVertexArray(0);
 
-    loadTexture("data/wall.jpg", &texture);
+    loadTexture(gameParameters.GetCubeTexture().c_str(), &texture);
 }
 
 CubeRenderer::~CubeRenderer()

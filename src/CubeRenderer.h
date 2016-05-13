@@ -9,25 +9,25 @@
 #include "Cube.h"
 #include "shader.h"
 #include "GameObjects/Camera.h"
+#include "GameParameters.h"
 
-class CubeRenderer
-{
+class CubeRenderer {
 public:
-    CubeRenderer ();
+    CubeRenderer(GameParameters &gameParameters);
 
-    ~CubeRenderer ();
+    ~CubeRenderer();
 
-    void render(Cube& cube, Camera * camera);
+    void render(Cube &cube, Camera *camera);
 
 private:
     GameShader cubeShader;
     std::vector<GLfloat> cubeVertices;
-    GLuint  vertexBufferObject;
-    GLuint  vertexArrayObject;
-    GLuint  texture;
+    GLuint vertexBufferObject;
+    GLuint vertexArrayObject;
+    GLuint texture;
 
     const glm::mat4 projectionMatrix;
     const float LOCAL_EDGE_LENGTH = 2;
 
-    int loadTexture(const GLchar * imagePath, GLuint * texture);
+    int loadTexture(const GLchar *imagePath, GLuint *texture);
 };

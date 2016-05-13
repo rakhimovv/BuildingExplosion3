@@ -11,15 +11,19 @@
 #include <glm/glm.hpp>
 #include <assert.h>
 #include "shader.h"
+#include "GameParameters.h"
+#include "GameObjects/Line.h"
+#include "GameObjects/Camera.h"
+#include "GameObjects/Mesh.h"
 
 class LineRenderer
 {
 public:
-    LineRenderer();
+    LineRenderer(GameParameters& gameParameters);
 
     ~LineRenderer();
 
-    void render(const glm::vec3& p0, const glm::vec3& p1);
+    void render(Line& line, Camera& camera);
 
 private:
     GLuint vertexBufferObject;

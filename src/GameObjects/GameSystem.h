@@ -12,8 +12,12 @@
 #include "../CubeRenderer.h"
 #include "../SkyboxRenderer.h"
 #include "../LineRenderer.h"
+#include "../GameParameters.h"
 #include "Explosion.h"
 #include "Bomb.h"
+#include "Line.h"
+#include "Sphere.h"
+
 
 class Block;
 
@@ -42,14 +46,16 @@ public:
 
 private:
     CachedArray<Block *> blocks;
-    ParticleSystem<ParticleInfo> *particleSystem;
+    ParticleSystem<ParticleInfo> * particleSystem;
     float constTimeStep;
-    SkyBoxRenderer *skyBoxRenderer;
-    CubeRenderer *cubeRenderer;
-    LineRenderer *lineRenderer;
-    Explosion *explosion;
+    SkyBoxRenderer * skyBoxRenderer;
+    CubeRenderer * cubeRenderer;
+    LineRenderer * lineRenderer;
+    GameParameters gameParameters;
+    Explosion * explosion;
     Camera * camera;
-    Bomb *bomb;
+    Bomb * bomb;
+    Sphere * sphere;
 };
 
 
