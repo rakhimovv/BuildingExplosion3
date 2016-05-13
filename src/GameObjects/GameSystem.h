@@ -16,7 +16,6 @@
 #include "Explosion.h"
 #include "Bomb.h"
 #include "Line.h"
-#include "Sphere.h"
 #include "../Physics/AosParticleSystem.h"
 
 
@@ -56,7 +55,6 @@ private:
     Explosion * explosion;
     Camera * camera;
     Bomb * bomb;
-    Sphere * sphere;
 };
 
 

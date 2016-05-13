@@ -30,18 +30,6 @@ GameSystem::GameSystem(float constTimeStep): gameParameters("data/gameconfig.jso
 
 //    this->sphere = new Sphere(&center, 0.5f, &color, gameParameters);
 
-    /*
-    // Добавим связи между блоками (не внутри них!)
-    for (int i = 0; i < blocks.GetElementsCount(); i++) {
-        // TODO нормально добавиться связи
-        for (int j = 0; j < blocks.GetElementsCount(); j++) {
-            if (i != j) {
-                GetParticleSystem()->AddLink(*blocks.GetByIndex(i)->GetParticleHandle(0), *blocks.GetByIndex(j)->GetParticleHandle(0));
-            }
-        }
-    }
-    */
-
     // Улетают в бесконечность, потому что нет гравитации и границ мира, кроме нижней
 
     //h этажей по n кубиков
