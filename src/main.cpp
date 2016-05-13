@@ -8,9 +8,10 @@
 #include "../dependencies/json/json.h"
 #include "GameParameters.h"
 
-int main() {
+int main()
+{
     sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "BuildingExplosion3", sf::Style::Default,
-                            sf::ContextSettings(32, 8, 3, 3, 0));
+                            sf::ContextSettings(32, 8, 4, 3, 0));
 
     sf::Clock gameClock;
     float elapsedTime = 0.0f;
@@ -24,13 +25,16 @@ int main() {
     glClearColor(1.0f, 0.1f, 0.4f, 1.0f);
     glEnable(GL_DEPTH_TEST);
 
+    glEnable(GL_LINE_SMOOTH);
+    glEnable(GL_MULTISAMPLE);
+    glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
+
     //GameShader cubeShader("data/shaders/cubevertex.frag", "data/shaders/cubefragment.frag");
 
     GameSystem gameSystem(constTimeStep);
 
-    GameParameters gameParameters("data/gameconfig.json");
+//    GameParameters gameParameters("data/gameconfig.json");
 
-    LineRenderer lineRenderer;
 
     // Очередь для нажатых клавиш (т.к. у нас есть промежутки между апдейтами)
     std::queue<sf::Keyboard::Key> buttonsCache;

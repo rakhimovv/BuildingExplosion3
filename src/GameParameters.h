@@ -22,6 +22,8 @@ public:
     const std::string& GetLineFragmentShader();
     const std::string& GetSkyboxFragmentShader();
     const std::string& GetSkyboxVertexShader();
+    const std::string& GetSphereVertexShader();
+    const std::string& GetSphereFragmentShader();
 
     const std::string& GetCubeTexture();
     const std::vector<std::string>& GetSkyboxTextures();
@@ -36,6 +38,8 @@ private:
     std::string lineVertexShaderPath;
     std::string skyboxFragmentShaderPath;
     std::string skyboxVertexShaderPath;
+    std::string sphereVertexShaderPath;
+    std::string sphereFragmentShaderPath;
 
     //Texture options
     std::vector<std::string> skyboxTexturePaths;

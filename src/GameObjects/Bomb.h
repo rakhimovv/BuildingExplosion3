@@ -7,6 +7,7 @@
 
 
 #include "GameSystem.h"
+#include "Camera.h"
 
 class Bomb {
 public:

@@ -8,10 +8,10 @@
 #include <iostream>
 #include <glm/gtx/rotate_vector.hpp>
 
-Camera::Camera(): clock(), viewMatrix(), projectionMatrix()
+Camera::Camera(GameParameters& gameParameters): clock(), viewMatrix(), projectionMatrix()
 {
-    cameraSpeed = 0.0125f;
-    cameraSpeedStep = 0.005f;
+    cameraSpeed = gameParameters.GetCameraSpeed();
+    cameraSpeedStep = gameParameters.GetCameraSpeedStep();
 
     yawAngle = 1.0f;
     pitchAngle = 1.0f;
@@ -95,12 +95,12 @@ void Camera::ModifyCamera(sf::Keyboard::Key button)
         pitchAngle = -89.0f;
 }
 
-glm::mat4&  Camera::GetViewMatrix() {
+const glm::mat4&  Camera::GetViewMatrix() {
     viewMatrix = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
     return viewMatrix;
 }
 
-glm::mat4& Camera::GetProjectionMatrix() {
+const glm::mat4& Camera::GetProjectionMatrix() {
     return projectionMatrix;
 }
 

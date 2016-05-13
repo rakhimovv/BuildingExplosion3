@@ -9,6 +9,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <GL/glew.h>
 #include <SFML/System/Clock.hpp>
+#include "../GameParameters.h"
 
 enum  MoveDirection {
     MOVE_FORWARD,
@@ -19,12 +20,12 @@ enum  MoveDirection {
 
 class Camera {
 public:
-    Camera();
+    Camera(GameParameters& gameParameters);
 
     void MoveCamera(std::queue<sf::Keyboard::Key>& pressedButton);
     void PrintParameters();
-    glm::mat4&  GetViewMatrix();
-    glm::mat4&  GetProjectionMatrix();
+    const glm::mat4&  GetViewMatrix();
+    const glm::mat4&  GetProjectionMatrix();
 private:
     void ModifyCamera(sf::Keyboard::Key button);
     glm::vec3 cameraPos;

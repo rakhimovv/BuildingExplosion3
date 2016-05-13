@@ -11,11 +11,12 @@
 
 #include "GameObjects/Camera.h"
 #include "shader.h"
+#include "GameParameters.h"
 
 class SkyBoxRenderer
 {
 public:
-    SkyBoxRenderer();
+    SkyBoxRenderer(GameParameters& gameParameters);
 
     void render(Camera * gameCamera);
 
@@ -24,6 +25,7 @@ private:
     GameShader cubeMapShader;
     glm::mat4 modelMatrix;
     glm::mat4 projectionMatrix;
+    glm::mat4 viewMatrix;
     std::vector<const GLchar *> boxFaces;
     GLuint cubeMapTexture;
     GLuint skyboxVAO;

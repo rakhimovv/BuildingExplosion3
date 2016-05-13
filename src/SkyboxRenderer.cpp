@@ -53,19 +53,27 @@ GLfloat cube_vertices[] = {
         1.0f, -1.0f,  1.0f
 };
 
-SkyBoxRenderer::SkyBoxRenderer():
+SkyBoxRenderer::SkyBoxRenderer(GameParameters& gameParameters):
         cubeVertices(std::begin(cube_vertices), std::end(cube_vertices)),
-        cubeMapShader("data/shaders/skyboxvertex.frag", "data/shaders/skyboxfragment.frag")
+        cubeMapShader(gameParameters.GetSkyboxVertexShader().c_str(), gameParameters.GetSkyboxFragmentShader().c_str())
 {
     projectionMatrix = glm::perspective(45.0f, (GLfloat)WIDTH / (GLfloat)HEIGHT, 0.01f, 500.0f);
     modelMatrix = glm::scale(modelMatrix, glm::vec3(4.0f, 4.0f, 4.0f));
+    modelMatrix = glm::translate(modelMatrix, glm::vec3(0.0f, 0.5f, 0.0f));
 
-    boxFaces.push_back("data/hills_rt.tga");
-    boxFaces.push_back("data/hills_lf.tga");
-    boxFaces.push_back("data/hills_up.tga");
-    boxFaces.push_back("data/hills_dn.tga");
-    boxFaces.push_back("data/hills_bk.tga");
-    boxFaces.push_back("data/hills_ft.tga");
+//    boxFaces.push_back("data/hills_rt.tga");
+//    boxFaces.push_back("data/hills_lf.tga");
+//    boxFaces.push_back("data/hills_up.tga");
+//    boxFaces.push_back("data/hills_dn.tga");
+//    boxFaces.push_back("data/hills_bk.tga");
+//    boxFaces.push_back("data/hills_ft.tga");
+
+    boxFaces.push_back(gameParameters.GetSkyboxTextures()[0].c_str());
+    boxFaces.push_back(gameParameters.GetSkyboxTextures()[1].c_str());
+    boxFaces.push_back(gameParameters.GetSkyboxTextures()[2].c_str());
+    boxFaces.push_back(gameParameters.GetSkyboxTextures()[3].c_str());
+    boxFaces.push_back(gameParameters.GetSkyboxTextures()[4].c_str());
+    boxFaces.push_back(gameParameters.GetSkyboxTextures()[5].c_str());
 
     glGenVertexArrays(1, &skyboxVAO);
     glGenBuffers(1, &skyboxVBO);
@@ -89,7 +97,7 @@ void SkyBoxRenderer::render(Camera * camera)
     glDepthMask(GL_FALSE);
     cubeMapShader.use();
 //    glm::mat4 view;
-//    view = glm::translate(view, glm::vec3(0.0f, 0.0f, -4.0f));
+//     = glm::translate(view, glm::vec3(0.0f, 2.0f, 0.0f));
 //    view = glm::rotate(view, glm::radians(30.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 //    projection = glm::perspective(45.0f, (GLfloat)WIDTH / (GLfloat)HEIGHT, 0.1f, 100.0f);
 

@@ -32,10 +32,19 @@ GameParameters::GameParameters(const char * configFilePath) {
     loadStringParameter(configRoot, "shaders", "lineVertex", lineVertexShaderPath);
     loadStringParameter(configRoot, "shaders", "skyboxFragment", skyboxFragmentShaderPath);
     loadStringParameter(configRoot, "shaders", "skyboxVertex", skyboxVertexShaderPath);
+    loadStringParameter(configRoot, "shaders", "sphereVertex", sphereVertexShaderPath);
+    loadStringParameter(configRoot, "shaders", "sphereFragment", sphereFragmentShaderPath);
 
     // Load textures paths
     loadStringParameter(configRoot, "textures", "cubeTexture", cubeTexturePath);
-//    loadParameter(configRoot, "textures", "skyboxTexture", cubeTexturePath);
+
+    skyboxTexturePaths.resize(10);
+    loadStringParameter(configRoot, "textures", "skyboxRightTexture", skyboxTexturePaths[0]);
+    loadStringParameter(configRoot, "textures", "skyboxLeftTexture", skyboxTexturePaths[1]);
+    loadStringParameter(configRoot, "textures", "skyboxUpTexture", skyboxTexturePaths[2]);
+    loadStringParameter(configRoot, "textures", "skyboxBottomTexture", skyboxTexturePaths[3]);
+    loadStringParameter(configRoot, "textures", "skyboxBackTexture", skyboxTexturePaths[4]);
+    loadStringParameter(configRoot, "textures", "skyboxFrontTexture", skyboxTexturePaths[5]);
 
     // Load camera parameters
     loadFloatParameter(configRoot, "camera", "cameraSpeed", cameraSpeed);
@@ -82,17 +91,23 @@ void GameParameters::loadFloatParameter(const Json::Value& configRoot, const cha
 
 void GameParameters::dumpParameters()
 {
+    std::cout << std::endl;
+
     std::cout << "cubeFragmentShaderPath: <" << cubeFragmentShaderPath << ">" << std::endl;
     std::cout << "cubeVertexShaderPath: <" << cubeVertexShaderPath << ">" << std::endl;
     std::cout << "lineFragmentShaderPath: <" << lineFragmentShaderPath << ">" << std::endl;
     std::cout << "lineVertexShaderPath: <" << lineVertexShaderPath << ">" << std::endl;
     std::cout << "skyboxFragmentShaderPath: <" << skyboxFragmentShaderPath << ">" << std::endl;
     std::cout << "skyboxVertexShaderPath: <" << skyboxVertexShaderPath << ">" << std::endl;
+    std::cout << "sphereVertexShaderPath: <" << sphereVertexShaderPath << ">" << std::endl;
+    std::cout << "sphereFragmentShaderPath: <" << sphereFragmentShaderPath << ">" << std::endl;
 
     std::cout << "cubeTexturePath: <" << cubeTexturePath << ">" << std::endl;
 
     std::cout << "cameraSpeed: <" << cameraSpeed << ">" << std::endl;
     std::cout << "cameraSpeedStep: <" << cameraSpeedStep << ">" << std::endl;
+
+    std::cout << std::endl;
 }
 
 const std::string& GameParameters::GetCubeFragmentShader()
@@ -123,6 +138,16 @@ const std::string& GameParameters::GetSkyboxFragmentShader()
 const std::string& GameParameters::GetSkyboxVertexShader()
 {
     return this->skyboxVertexShaderPath;
+}
+
+const std::string& GameParameters::GetSphereVertexShader()
+{
+    return this->sphereVertexShaderPath;
+}
+
+const std::string& GameParameters::GetSphereFragmentShader()
+{
+    return this->sphereFragmentShaderPath;
 }
 
 const std::string& GameParameters::GetCubeTexture()
