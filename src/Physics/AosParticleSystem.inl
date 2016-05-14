@@ -31,7 +31,7 @@ void AosLink<UserInfo>::Solve(AosParticleSystem<UserInfo> *sys) {
 
 
 
-    if (exists && (delta.Length() - defLength) / defLength < 0.2f) {
+    //if (exists && (delta.Length() - defLength) / defLength < 0.2f) {
         if (!p0->isFixed) {
             p0->pos = p0->pos + dir *
                                 (delta.Length() - defLength) * 0.5f * stiffness;
@@ -40,10 +40,10 @@ void AosLink<UserInfo>::Solve(AosParticleSystem<UserInfo> *sys) {
             p1->pos = p1->pos + dir *
                                 (delta.Length() - defLength) * -0.5f * stiffness;
         }
-    } else {
-        this->exists = false;
-        std::cout << "link isn't existing more\n";
-    }
+    //} else {
+    //    this->exists = false;
+    //    std::cout << "link isn't existing more\n";
+    //}
 }
 
 template<typename UserInfo>
