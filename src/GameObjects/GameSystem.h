@@ -49,7 +49,7 @@ public:
     struct LinkLine {
         size_t p0;
         size_t p1;
-        auto line;
+        Line * line;
     };
 
     GameSystem(float constTimeStep);

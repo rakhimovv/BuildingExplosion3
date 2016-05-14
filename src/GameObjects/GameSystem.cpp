@@ -68,23 +68,32 @@ GameSystem::GameSystem(float constTimeStep) : gameParameters("data/gameconfig.js
     // Добавим связи между блоками (не внутри них!)
 
     for (int i = 0; i < blocks.GetElementsCount(); i++) {
+        //template<typename UserInfo>
+
+        auto iHandle = *blocks.GetByIndex(i)->GetParticleHandle(0);
+        Vector3f iPos = iHandle.GetPos();
+
+        std::cout << "I: "; iPos.Print();
+        std::cout << "\n";
+
         for (int j = 0; j < blocks.GetElementsCount(); j++) {
 
             //template<typename UserInfo>
+
             auto jHandle = *blocks.GetByIndex(j)->GetParticleHandle(0);
             Vector3f jPos = jHandle.GetPos();
 
-            //template<typename UserInfo>
-            auto iHandle = *blocks.GetByIndex(i)->GetParticleHandle(0);
-            Vector3f iPos = iHandle.GetPos();
-
-            if ((jPos - iPos).Length() < std::sqrt(2.0f) * empty) {
+            if ((jPos - iPos).Length() < std::sqrt(2.0f) * empty && i != j) {
                 //LinkLine * l= new LinkLine();
                 LinkLine l;
-                GetParticleSystem()->AddLink(iHandle, jHandle, 0.001f, 1.0f);
+
+                GetParticleSystem()->AddLink(iHandle, jHandle, 0.5f, 1.0f);
 
                 l.p0 = iHandle.GetParticleIndex();//this->particleSystem->GetLinks().back().particleId0;
                 l.p1 = jHandle.GetParticleIndex();
+
+                std::cout << "j: "; jPos.Print();
+                std::cout << "\n";
 
 
                 glm::vec3 pos0(iPos.x, iPos.y, iPos.z);
@@ -93,7 +102,7 @@ GameSystem::GameSystem(float constTimeStep) : gameParameters("data/gameconfig.js
 
                 // TODO Здесь проблема с передачей твоего line в мою структуру. Структура LinkLine хранит номера
                 // частиц к которым привязан link и класс line ответственный за отрисовку линии между ними
-                l.line = line;
+                l.line = new Line(pos0, pos1, color, gameParameters);
 
                 linkLine.Add(l);
             }
@@ -114,10 +123,10 @@ GameSystem::~GameSystem() {
         delete blocks[blockIndex];
     }
 
-    /*
+
     for (size_t blockIndex = 0; blockIndex < linkLine.GetElementsCount(); blockIndex++) {
-        delete linkLine[blockIndex];
-    }*/
+        delete linkLine[blockIndex].line;
+    }
 
     delete skyBoxRenderer;
     delete cubeRenderer;
@@ -208,8 +217,8 @@ void GameSystem::Update(float dt, std::queue<sf::Keyboard::Key> &pressedButtons)
         glm::vec3 gpos0(pos0.x, pos0.y, pos0.z);
         glm::vec3 gpos1(pos1.x, pos1.y, pos1.z);
 
-        linkLine[i].line.update(&gpos0, &gpos1);
-        linkLine[i].line.render(*this->camera);
+        linkLine[i].line->update(&gpos0, &gpos1);
+        linkLine[i].line->render(*this->camera);
     }
 
     if (bomb && bomb->Exists()) {
