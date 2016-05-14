@@ -16,6 +16,7 @@ AosLink<UserInfo>::AosLink(size_t particleId0, size_t particleId1, float stiffne
     this->stiffness = stiffness;
     this->defLength =
             (sys->GetParticleById(particleId0).pos - sys->GetParticleById(particleId1).pos).Length() * stretch;
+    this->exists = true;
 }
 
 template<typename UserInfo>
@@ -26,16 +27,23 @@ void AosLink<UserInfo>::Solve(AosParticleSystem<UserInfo> *sys) {
     //std::cout << "delta: " << delta.Length() << "\n";
     Vector3f dir = delta * (1.0f / delta.Length());
 
-    //if (delta.Length() < 2.5f) {
-    if (!p0->isFixed) {
-        p0->pos = p0->pos + dir *
-                            (delta.Length() - defLength) * 0.5f * stiffness;
+    //std::cout << (delta.Length() - defLength) / defLength << "\n";
+
+
+
+    if (exists && (delta.Length() - defLength) / defLength < 0.2f) {
+        if (!p0->isFixed) {
+            p0->pos = p0->pos + dir *
+                                (delta.Length() - defLength) * 0.5f * stiffness;
+        }
+        if (!p1->isFixed) {
+            p1->pos = p1->pos + dir *
+                                (delta.Length() - defLength) * -0.5f * stiffness;
+        }
+    } else {
+        this->exists = false;
+        std::cout << "link isn't existing more\n";
     }
-    if (!p1->isFixed) {
-        p1->pos = p1->pos + dir *
-                            (delta.Length() - defLength) * -0.5f * stiffness;
-    }
-    //}
 }
 
 template<typename UserInfo>

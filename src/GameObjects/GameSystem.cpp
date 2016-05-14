@@ -33,6 +33,7 @@ GameSystem::GameSystem(float constTimeStep) : gameParameters("data/gameconfig.js
     // Улетают в бесконечность, потому что нет гравитации и границ мира, кроме нижней
 
     //h этажей по n кубиков
+    /*
     int h = 2;
     int n = 2;
     float edge = 0.1f;
@@ -62,40 +63,66 @@ GameSystem::GameSystem(float constTimeStep) : gameParameters("data/gameconfig.js
             blockDesc.edgeLength = edge;
             blocks.Add(new Block(blockDesc, this));
         }
+    }*/
+
+    int H = 7;
+    int N = 7;
+    float R1 = 0.4f;
+    float R2 = 0.7f;
+    float edge = 0.05f;
+    double alpha = 2.0f * M_PI / (N - 1.0f);
+
+    double a = R1 * sin(alpha) / sin(90.0 - alpha / 2.0);
+
+    for (float z = 0; z < H; z += a) {
+        for(int i = 0; i < N; i++) {
+            double beta = alpha * (i * 1.0f);
+            float x = cosf(beta);
+            float y = sinf(beta);
+
+            Block::Descriptor blockDesc;
+            Vector3f pos = Vector3f(x * R1, minPoint.y + edge / 2.0f + z, y * R1);
+            blockDesc.vertexPositions.push_back(pos);
+            blockDesc.edgeLength = edge;
+            blocks.Add(new Block(blockDesc, this));
+
+            /*
+            Block::Descriptor blockDesc1;
+            Vector3f pos1 = Vector3f(x * R2, minPoint.y + edge / 2.0f + z, y * R2);
+            blockDesc1.vertexPositions.push_back(pos1);
+            blockDesc1.edgeLength = edge;
+            blocks.Add(new Block(blockDesc, this));
+             */
+        }
     }
 
+    // Создадим бомбу
+    Bomb::Descriptor bombDesc;
+    bombDesc.edgeLength = 2.0f * edge;
+    bombDesc.pos = Vector3f(0.0f, H / 3.0f, 0.0f);
+    bomb = new Bomb(bombDesc, this);
 
     // Добавим связи между блоками (не внутри них!)
 
+
     for (int i = 0; i < blocks.GetElementsCount(); i++) {
-        //template<typename UserInfo>
 
         auto iHandle = *blocks.GetByIndex(i)->GetParticleHandle(0);
         Vector3f iPos = iHandle.GetPos();
 
-        //std::cout << "I: "; iPos.Print();
-        //std::cout << "\n";
-
         for (int j = 0; j < blocks.GetElementsCount(); j++) {
-
-            //template<typename UserInfo>
-
             auto jHandle = *blocks.GetByIndex(j)->GetParticleHandle(0);
             Vector3f jPos = jHandle.GetPos();
 
-            //if ((jPos - iPos).Length() < std::sqrt(2.0f) * empty && i != j) {
-            if (i != j) {
-                //LinkLine * l= new LinkLine();
+            //if (i != j && (jPos - iPos).Length() < std::sqrt(2.0f) * empty + 0.1) {
+            //if (i != j) {
+            if (i != j && (jPos - iPos).Length() <= a + 0.2f) {
                 LinkLine l;
 
-                GetParticleSystem()->AddLink(iHandle, jHandle, 0.5f, 1.0f);
+                GetParticleSystem()->AddLink(iHandle, jHandle, 0.2f, 1.0f);
 
                 l.p0 = iHandle.GetParticleIndex();//this->particleSystem->GetLinks().back().particleId0;
                 l.p1 = jHandle.GetParticleIndex();
-
-                //std::cout << "j: "; jPos.Print();
-                //std::cout << "\n";
-
 
                 glm::vec3 pos0(iPos.x, iPos.y, iPos.z);
                 glm::vec3 pos1(jPos.x, jPos.y, jPos.z);
@@ -107,14 +134,6 @@ GameSystem::GameSystem(float constTimeStep) : gameParameters("data/gameconfig.js
             }
         }
     }
-
-    // Создадим бомбу
-    Bomb::Descriptor bombDesc;
-    bombDesc.edgeLength = 2.0f * edge;
-    bombDesc.pos = Vector3f(-1.0f + 1.5f * edge, minPoint.y + edge / 2.0f + h / 2.0f * empty,
-                            -1.0f + edge / 2.0f + n / 2.0f * empty);
-    bomb = new Bomb(bombDesc, this);
-
 }
 
 GameSystem::~GameSystem() {

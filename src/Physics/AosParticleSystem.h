@@ -35,6 +35,8 @@ public:
 
     float defLength;
     float stiffness;
+
+    bool exists;
 };
 
 template<typename UserInfo>
