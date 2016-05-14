@@ -8,8 +8,65 @@
 #include "../dependencies/json/json.h"
 #include "GameParameters.h"
 
+void Menu(sf::RenderWindow &window) {
+    bool isMenu = 1;
+    int menuNum = 0;
+
+    sf::Texture menuTexture1, menuTexture2, menuBackground;
+    menuTexture1.loadFromFile("data/start.png");
+    menuTexture2.loadFromFile("data/exit.png");
+    menuBackground.loadFromFile("data/background.jpg");
+
+    sf::Sprite menu1(menuTexture1), menu2(menuTexture2), menuBg(menuBackground);
+    menu1.setPosition(150, 200);
+    menu2.setPosition(150, 300);
+    menuBg.setPosition(0, 0);
+
+
+    while (isMenu & window.isOpen()) {
+        menu1.setColor(sf::Color::White);
+        menu2.setColor(sf::Color::White);
+        menuNum = 0;
+        window.clear(sf::Color(240, 222, 179));
+
+        if (sf::IntRect(150, 200, 250, 50).contains(sf::Mouse::getPosition(window))) {
+            menu1.setColor(sf::Color::Blue);
+            menuNum = 1;
+        }
+        if (sf::IntRect(150, 300, 250, 50).contains(sf::Mouse::getPosition(window))) {
+            menu2.setColor(sf::Color::Blue);
+            menuNum = 3;
+        }
+
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+            if (menuNum == 1) isMenu = false;
+            if (menuNum == 3) {
+                //window.close();
+                isMenu = false;
+            }
+
+        }
+        sf::Event evt;
+        while (window.pollEvent(evt)) {
+            if (evt.type == sf::Event::Closed) {
+                window.close();
+            }
+        }
+
+        window.draw(menuBg);
+        window.draw(menu1);
+        window.draw(menu2);
+
+        window.display();
+    }
+}
+
 int main()
 {
+    sf::RenderWindow enterWindow(sf::VideoMode(WIDTH, HEIGHT), "BuildingExplosion3");
+    Menu(enterWindow);
+    enterWindow.close();
+
     sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "BuildingExplosion3", sf::Style::Default,
                             sf::ContextSettings(32, 8, 4, 3, 0));
 
@@ -38,6 +95,8 @@ int main()
 
     // Очередь для нажатых клавиш (т.к. у нас есть промежутки между апдейтами)
     std::queue<sf::Keyboard::Key> buttonsCache;
+
+    //Menu(window);
 
     bool isRunning = true;
     while (isRunning) {
