@@ -49,6 +49,8 @@ set(SOURCE_FILES
         src/GameParameters.h
         src/GameObjects/Line.h
         src/GameObjects/Line.cpp
+        src/GameShaders.h
+        src/GameShaders.cpp
         )
 
 add_executable(${EXECUTABLE_NAME} ${SOURCE_FILES})

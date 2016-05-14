@@ -16,13 +16,15 @@
 class SkyBoxRenderer
 {
 public:
-    SkyBoxRenderer(GameParameters& gameParameters);
+    SkyBoxRenderer(GameShader * shader, GameParameters& gameParameters);
 
     void render(Camera * gameCamera);
 
 private:
     std::vector<GLfloat> cubeVertices;
-    GameShader cubeMapShader;
+
+    GameShader * cubeMapShader;
+
     glm::mat4 modelMatrix;
     glm::mat4 projectionMatrix;
     glm::mat4 viewMatrix;

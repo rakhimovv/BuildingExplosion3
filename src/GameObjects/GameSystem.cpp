@@ -21,9 +21,10 @@ GameSystem::GameSystem(float constTimeStep) : gameParameters("data/gameconfig.js
     this->bomb = nullptr;
     this->camera = new Camera(gameParameters);
 
+    this->gameGraphic = new GameGraphic(gameParameters);
     // Инициалиазация openGl для примитивов в классах обернута
-    this->skyBoxRenderer = new SkyBoxRenderer(gameParameters);
-    this->cubeRenderer = new CubeRenderer(gameParameters);
+    this->skyBoxRenderer = new SkyBoxRenderer(gameGraphic->GetSkyboxShader(), gameParameters);
+    this->cubeRenderer = new CubeRenderer(gameGraphic->GetCubeShader(), gameParameters);
 
     glm::vec3 color = glm::vec3(1.0f, 0.0f, 0.0f);
     glm::vec3 center = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -99,9 +100,8 @@ GameSystem::GameSystem(float constTimeStep) : gameParameters("data/gameconfig.js
 
                 glm::vec3 pos0(iPos.x, iPos.y, iPos.z);
                 glm::vec3 pos1(jPos.x, jPos.y, jPos.z);
-                Line line(pos0, pos1, color, gameParameters);
 
-                l.line = new Line(pos0, pos1, color, gameParameters);
+                l.line = new Line(pos0, pos1, color, gameGraphic->GetLineShader());
 
                 linkLine.Add(l);
             }
@@ -127,6 +127,9 @@ GameSystem::~GameSystem() {
         delete linkLine[blockIndex].line;
     }
 
+    camera->PrintParameters();
+
+    delete gameGraphic;
     delete skyBoxRenderer;
     delete cubeRenderer;
     delete bomb;

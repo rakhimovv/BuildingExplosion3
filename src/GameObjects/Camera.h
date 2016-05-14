@@ -26,6 +26,8 @@ public:
     void PrintParameters();
     const glm::mat4&  GetViewMatrix();
     const glm::mat4&  GetProjectionMatrix();
+
+    void dump();
 private:
     void ModifyCamera(sf::Keyboard::Key button);
     glm::vec3 cameraPos;
@@ -45,6 +47,4 @@ private:
 
     glm::mat4 viewMatrix;
     glm::mat4 projectionMatrix;
-
-    sf::Clock clock;
 };

@@ -18,7 +18,7 @@
 
 class Line : public Mesh {
 public:
-    Line(glm::vec3& p0, glm::vec3& p1, glm::vec3& color, GameParameters& gameParameters);
+    Line(glm::vec3& p0, glm::vec3& p1, glm::vec3& color, GameShader * lineShader);
 
     //! @overload
     virtual std::vector<float>& getVertices();
@@ -45,7 +45,10 @@ private:
 
     GLuint vertexBufferObject;
     GLuint vertexArrayObject;
-    GameShader lineShader;
+
+    GameShader * lineShader;
+
+//    static GameShader lineShader(gameParameters.GetLineVertexShader().c_str(), gameParameters.GetLineFragmentShader().c_str());
 };
 
 

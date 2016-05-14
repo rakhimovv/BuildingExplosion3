@@ -16,6 +16,7 @@
 #include "Bomb.h"
 #include "Line.h"
 #include "../Physics/AosParticleSystem.h"
+#include "../GameShaders.h"
 
 
 class Block;
@@ -74,6 +75,7 @@ private:
     CachedArray<Block *> blocks;
     AosParticleSystem<ParticleInfo> * particleSystem;
     float constTimeStep;
+    GameGraphic * gameGraphic;
     SkyBoxRenderer * skyBoxRenderer;
     CubeRenderer * cubeRenderer;
     GameParameters gameParameters;
