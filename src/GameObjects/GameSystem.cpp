@@ -55,7 +55,7 @@ GameSystem::GameSystem(float constTimeStep) : gameParameters("data/gameconfig.js
     for (int i = 0; i < h; i++) {
         for (int j = 0; j < n; j++) {
             Block::Descriptor blockDesc;
-            Vector3f pos = Vector3f(-1.0f + 3 * edge, minPoint.y + edge / 2.0f + i * empty,
+            Vector3f pos = Vector3f(-1.0f + empty, minPoint.y + edge / 2.0f + i * empty,
                                     -1.0f + edge / 2.0f + j * empty);
             //pos.Print(); std::cout << std::endl;
             blockDesc.vertexPositions.push_back(pos);
@@ -73,8 +73,8 @@ GameSystem::GameSystem(float constTimeStep) : gameParameters("data/gameconfig.js
         auto iHandle = *blocks.GetByIndex(i)->GetParticleHandle(0);
         Vector3f iPos = iHandle.GetPos();
 
-        std::cout << "I: "; iPos.Print();
-        std::cout << "\n";
+        //std::cout << "I: "; iPos.Print();
+        //std::cout << "\n";
 
         for (int j = 0; j < blocks.GetElementsCount(); j++) {
 
@@ -83,7 +83,8 @@ GameSystem::GameSystem(float constTimeStep) : gameParameters("data/gameconfig.js
             auto jHandle = *blocks.GetByIndex(j)->GetParticleHandle(0);
             Vector3f jPos = jHandle.GetPos();
 
-            if ((jPos - iPos).Length() < std::sqrt(2.0f) * empty && i != j) {
+            //if ((jPos - iPos).Length() < std::sqrt(2.0f) * empty && i != j) {
+            if (i != j) {
                 //LinkLine * l= new LinkLine();
                 LinkLine l;
 
@@ -92,16 +93,14 @@ GameSystem::GameSystem(float constTimeStep) : gameParameters("data/gameconfig.js
                 l.p0 = iHandle.GetParticleIndex();//this->particleSystem->GetLinks().back().particleId0;
                 l.p1 = jHandle.GetParticleIndex();
 
-                std::cout << "j: "; jPos.Print();
-                std::cout << "\n";
+                //std::cout << "j: "; jPos.Print();
+                //std::cout << "\n";
 
 
                 glm::vec3 pos0(iPos.x, iPos.y, iPos.z);
                 glm::vec3 pos1(jPos.x, jPos.y, jPos.z);
                 Line line(pos0, pos1, color, gameParameters);
 
-                // TODO Здесь проблема с передачей твоего line в мою структуру. Структура LinkLine хранит номера
-                // частиц к которым привязан link и класс line ответственный за отрисовку линии между ними
                 l.line = new Line(pos0, pos1, color, gameParameters);
 
                 linkLine.Add(l);
@@ -208,7 +207,7 @@ void GameSystem::Update(float dt, std::queue<sf::Keyboard::Key> &pressedButtons)
     //this->sphere->render(*this->camera);
 
     for (size_t objectIndex = 0; objectIndex < blocks.GetElementsCount(); objectIndex++) {
-        blocks[objectIndex]->Render();
+        //blocks[objectIndex]->Render();
     }
 
     for (size_t i = 0; i < linkLine.GetElementsCount(); i++) {
