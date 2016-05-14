@@ -25,8 +25,33 @@ class Explosion;
 
 class Camera;
 
+/*
+class LinkLine {
+
+    struct Descriptor {
+        size_t p0;
+        size_t p1;
+        auto line;
+    };
+
+    LinkLine(const Descriptor &desc);
+
+    ~LinkLine();
+
+    size_t p0;
+    size_t p1;
+    Line line;
+};
+ */
+
 class GameSystem {
 public:
+    struct LinkLine {
+        size_t p0;
+        size_t p1;
+        auto line;
+    };
+
     GameSystem(float constTimeStep);
 
     ~GameSystem();
@@ -44,6 +69,8 @@ public:
     Camera * GetCamera();
 
 private:
+    CachedArray<LinkLine> linkLine;
+    //CachedArray<LinkLine *> linkLine;
     CachedArray<Block *> blocks;
     AosParticleSystem<ParticleInfo> * particleSystem;
     float constTimeStep;

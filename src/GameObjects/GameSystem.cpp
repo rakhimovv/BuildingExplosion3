@@ -12,7 +12,7 @@ class LineRenderer;
 const Vector3f minPoint = Vector3f(-15.0f, -1.0f, -15.0f);
 const Vector3f maxPoint = Vector3f(15.0f, 15.0f, 15.0f);
 
-GameSystem::GameSystem(float constTimeStep): gameParameters("data/gameconfig.json") {
+GameSystem::GameSystem(float constTimeStep) : gameParameters("data/gameconfig.json") {
     // load config
 
     this->constTimeStep = constTimeStep;
@@ -28,7 +28,7 @@ GameSystem::GameSystem(float constTimeStep): gameParameters("data/gameconfig.jso
     glm::vec3 color = glm::vec3(1.0f, 0.0f, 0.0f);
     glm::vec3 center = glm::vec3(0.0f, 0.0f, 0.0f);
 
-//    this->sphere = new Sphere(&center, 0.5f, &color, gameParameters);
+    // this->sphere = new Sphere(&center, 0.5f, &color, gameParameters);
 
     // Улетают в бесконечность, потому что нет гравитации и границ мира, кроме нижней
 
@@ -67,18 +67,35 @@ GameSystem::GameSystem(float constTimeStep): gameParameters("data/gameconfig.jso
 
     // Добавим связи между блоками (не внутри них!)
 
-
     for (int i = 0; i < blocks.GetElementsCount(); i++) {
         for (int j = 0; j < blocks.GetElementsCount(); j++) {
-            //ParticleHandle * jHandle = blocks.GetByIndex(j)->GetParticleHandle(0);
-            //Vector3f jPos = blocks.GetByIndex(j)->GetParticleHandle(0)->GetPos();
 
-            //ParticleHandle * iHandle = blocks.GetByIndex(i)->GetParticleHandle(0);
-            //Vector3f iPos = blocks.GetByIndex(i)->GetParticleHandle(0)->GetPos();
+            //template<typename UserInfo>
+            auto jHandle = *blocks.GetByIndex(j)->GetParticleHandle(0);
+            Vector3f jPos = jHandle.GetPos();
 
-            //if ((jPos - iPos).Length() < std::sqrt(2.0f) * empty) {
-            if (i != j) {
-                GetParticleSystem()->AddLink(*blocks.GetByIndex(i)->GetParticleHandle(0), *blocks.GetByIndex(j)->GetParticleHandle(0), 0.001f, 1.0f);
+            //template<typename UserInfo>
+            auto iHandle = *blocks.GetByIndex(i)->GetParticleHandle(0);
+            Vector3f iPos = iHandle.GetPos();
+
+            if ((jPos - iPos).Length() < std::sqrt(2.0f) * empty) {
+                //LinkLine * l= new LinkLine();
+                LinkLine l;
+                GetParticleSystem()->AddLink(iHandle, jHandle, 0.001f, 1.0f);
+
+                l.p0 = iHandle.GetParticleIndex();//this->particleSystem->GetLinks().back().particleId0;
+                l.p1 = jHandle.GetParticleIndex();
+
+
+                glm::vec3 pos0(iPos.x, iPos.y, iPos.z);
+                glm::vec3 pos1(jPos.x, jPos.y, jPos.z);
+                Line line(pos0, pos1, color, gameParameters);
+
+                // TODO Здесь проблема с передачей твоего line в мою структуру. Структура LinkLine хранит номера
+                // частиц к которым привязан link и класс line ответственный за отрисовку линии между ними
+                l.line = line;
+
+                linkLine.Add(l);
             }
         }
     }
@@ -96,6 +113,11 @@ GameSystem::~GameSystem() {
     for (size_t blockIndex = 0; blockIndex < blocks.GetElementsCount(); blockIndex++) {
         delete blocks[blockIndex];
     }
+
+    /*
+    for (size_t blockIndex = 0; blockIndex < linkLine.GetElementsCount(); blockIndex++) {
+        delete linkLine[blockIndex];
+    }*/
 
     delete skyBoxRenderer;
     delete cubeRenderer;
@@ -116,15 +138,15 @@ SkyBoxRenderer *GameSystem::GetSkyBoxRenderer() {
     return skyBoxRenderer;
 }
 
-Camera *GameSystem::GetCamera()
-{
+Camera *GameSystem::GetCamera() {
     return camera;
 }
+
 void GameSystem::SetExplosion(Explosion *explosion) {
     this->explosion = explosion;
 }
 
-void GameSystem::Update(float dt, std::queue<sf::Keyboard::Key>& pressedButtons) {
+void GameSystem::Update(float dt, std::queue<sf::Keyboard::Key> &pressedButtons) {
     // Удаляем несуществующие объекты
     for (size_t blockIndex = 0; blockIndex < blocks.GetElementsCount(); blockIndex++) {
         if (!blocks[blockIndex]->Exists()) {
@@ -136,6 +158,7 @@ void GameSystem::Update(float dt, std::queue<sf::Keyboard::Key>& pressedButtons)
 
     // Обновляем CashedArray
     blocks.Update();
+    linkLine.Update();
 
     // Обновляем систему частиц
     particleSystem->Update();
@@ -179,20 +202,15 @@ void GameSystem::Update(float dt, std::queue<sf::Keyboard::Key>& pressedButtons)
         blocks[objectIndex]->Render();
     }
 
-    //* TODO КРАШ
-    glm::vec3 color = glm::vec3(1.0f, 0.0f, 0.0f);
-    for (size_t i = 0; i < this->particleSystem->GetLinks().size(); i++) {
-        size_t particleId0 = this->particleSystem->GetLinks()[i].particleId0;
-        size_t particleId1 = this->particleSystem->GetLinks()[i].particleId1;
-        Vector3f pos0 = this->particleSystem->GetParticle(particleId0).GetPos();
-        Vector3f pos1 = this->particleSystem->GetParticle(particleId1).GetPos();
-        glm::vec3 p0(pos0.x, pos0.y, pos0.z);
-        glm::vec3 p1(pos1.x, pos1.y, pos1.z);
-        Line line(p0, p1, color, gameParameters);
-        line.render(*this->camera);
-        //this->lineRenderer->render(line, *this->camera);
+    for (size_t i = 0; i < linkLine.GetElementsCount(); i++) {
+        Vector3f pos0 = this->particleSystem->GetParticleById(linkLine[i].p0).pos;
+        Vector3f pos1 = this->particleSystem->GetParticleById(linkLine[i].p1).pos;
+        glm::vec3 gpos0(pos0.x, pos0.y, pos0.z);
+        glm::vec3 gpos1(pos1.x, pos1.y, pos1.z);
+
+        linkLine[i].line.update(&gpos0, &gpos1);
+        linkLine[i].line.render(*this->camera);
     }
-    //*/
 
     if (bomb && bomb->Exists()) {
         bomb->Render();
