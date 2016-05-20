@@ -28,7 +28,14 @@ void AosLink<UserInfo>::Solve(AosParticleSystem<UserInfo> *sys) {
     Vector3f dir = delta * (1.0f / delta.Length());
     //std::cout << "delta - def: " << (delta.Length() - defLength) / defLength << "\n";
 
-    if (delta.Length() > 0.3) {
+    double cond = (delta.Length() - defLength);// / defLength;
+
+    cond = cond > 0.0 ? cond : -cond;
+
+    //std::cout << "cond: " << cond << "\n";
+
+    if (exists && cond > 0.005) {
+        std::cout << "UPSS! :)\n";
         exists = false;
     }
 
