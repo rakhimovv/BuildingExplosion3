@@ -176,7 +176,7 @@ void GameSystem::SetExplosion(Explosion *explosion) {
     this->explosion = explosion;
 }
 
-void GameSystem::Update(float dt, std::queue<sf::Keyboard::Key> &pressedButtons) {
+void GameSystem::Update(float dt, std::queue<sf::Keyboard::Key> &pressedButtons, std::queue<sf::Event::MouseMoveEvent>& mouseMoves)  {
     // Удаляем несуществующие объекты
     for (size_t blockIndex = 0; blockIndex < blocks.GetElementsCount(); blockIndex++) {
         if (!blocks[blockIndex]->Exists()) {
@@ -222,7 +222,7 @@ void GameSystem::Update(float dt, std::queue<sf::Keyboard::Key> &pressedButtons)
     }
 
     // Отрисовка
-    camera->MoveCamera(pressedButtons);
+    camera->MoveCamera(pressedButtons, mouseMoves);
 
     this->skyBoxRenderer->render(this->camera);
 

@@ -75,6 +75,8 @@ GameParameters::GameParameters(const char * configFilePath) {
     loadFloatParameter(configRoot, "camera", "yawAngle", yawAngle);
 
     dumpParameters();
+
+    input.close();
 }
 
 void GameParameters::loadStringParameter(const Json::Value& configRoot, const char * parameterType, const char * parameterName,

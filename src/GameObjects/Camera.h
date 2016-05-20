@@ -22,7 +22,7 @@ class Camera {
 public:
     Camera(GameParameters& gameParameters);
 
-    void MoveCamera(std::queue<sf::Keyboard::Key>& pressedButton);
+    void MoveCamera(std::queue<sf::Keyboard::Key>& pressedButton, std::queue<sf::Event::MouseMoveEvent>& mouseMoves);
     void PrintParameters();
     const glm::mat4&  GetViewMatrix();
     const glm::mat4&  GetProjectionMatrix();
@@ -30,6 +30,7 @@ public:
     void dump();
 private:
     void ModifyCamera(sf::Keyboard::Key button);
+
     glm::vec3 cameraPos;
     glm::vec3 cameraDirection;
     glm::vec3 cameraRight;
@@ -47,4 +48,10 @@ private:
 
     glm::mat4 viewMatrix;
     glm::mat4 projectionMatrix;
+
+    sf::Clock cameraClock;
+
+    float prevTime;
+    float currentTime;
+    float elapsedTime;
 };

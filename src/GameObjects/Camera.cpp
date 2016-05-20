@@ -8,7 +8,7 @@
 #include <iostream>
 #include <glm/gtx/rotate_vector.hpp>
 
-Camera::Camera(GameParameters& gameParameters): viewMatrix(), projectionMatrix()
+Camera::Camera(GameParameters& gameParameters): viewMatrix(), projectionMatrix(), cameraClock()
 {
     cameraSpeed = gameParameters.GetCameraSpeed();
     cameraSpeedStep = gameParameters.GetCameraSpeedStep();
@@ -29,41 +29,61 @@ Camera::Camera(GameParameters& gameParameters): viewMatrix(), projectionMatrix()
     cameraRight = gameParameters.GetCameraRight();
     cameraFront = gameParameters.GetCameraFront();
 
-////    cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
-//    cameraRight = glm::normalize(glm::cross(cameraUp, cameraDirection));
-//    cameraUp = glm::normalize(glm::cross(cameraDirection, cameraRight));
-//    cameraFront = glm::vec3(0.0f, 0.0f, 1.0f);
+    this->prevTime = 0;
+    this->currentTime = 0;
+    this->elapsedTime = 0;
 
     this->viewMatrix = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 
     this->projectionMatrix = glm::perspective(20.0f, (GLfloat)WIDTH / (GLfloat)HEIGHT, 0.1f, 100.0f);
 }
 
-void Camera::MoveCamera(std::queue<sf::Keyboard::Key>& pressedButtons) {
-//    std::cout << "Camera moved" << std::endl;
+void Camera::MoveCamera(std::queue<sf::Keyboard::Key>& pressedButtons, std::queue<sf::Event::MouseMoveEvent> &mouseMoves) {
+    glm::vec2 prevMousePos(0.0f, 0.0f);
 
     // Используем очередь
     while(!pressedButtons.empty()){
-//         1 нажатие клавиши
         ModifyCamera(pressedButtons.front());
         pressedButtons.pop();
+    }
+
+    while(!mouseMoves.empty()) {
+        sf::Event::MouseMoveEvent mousePos = mouseMoves.front();
+
+        float deltaX = mousePos.x - prevMousePos.x;
+        float deltaY = mousePos.y - prevMousePos.y;
+
+        yawAngle += deltaX * 0.001f;
+        pitchAngle += deltaY * 0.001f;
+
+        prevMousePos.x = mousePos.x;
+        prevMousePos.y = mousePos.y;
+
+        mouseMoves.pop();
+
+        std::cout << "PitchAngle: <" << pitchAngle << ">" << std::endl;
+        std::cout << "YawAngle: <" << yawAngle << ">" << std::endl;
     }
 }
 
 void Camera::ModifyCamera(sf::Keyboard::Key button)
 {
+    currentTime = cameraClock.getElapsedTime().asMilliseconds();
+    elapsedTime = (currentTime - prevTime) * 0.01f;
+    prevTime = currentTime;
+
     switch (button) {
         case sf::Keyboard::Key::W:
-            cameraPos += cameraSpeed * cameraFront;
+            cameraPos += cameraSpeed * cameraFront * elapsedTime;
             break;
         case sf::Keyboard::Key::S:
-            cameraPos -= cameraSpeed * cameraFront;
+            cameraPos -= cameraSpeed * cameraFront * elapsedTime;
             break;
         case sf::Keyboard::Key::A:
-            cameraPos -= cameraSpeed * glm::normalize(glm::cross(cameraFront, cameraUp));
+            cameraPos -= cameraSpeed * glm::normalize(glm::cross(cameraFront, cameraUp)) * elapsedTime;
             break;
         case sf::Keyboard::Key::D:
-            cameraPos += cameraSpeed * glm::normalize(glm::cross(cameraFront, cameraUp));
+            cameraPos += cameraSpeed * glm::normalize(glm::cross(cameraFront, cameraUp)) * elapsedTime;
             break;
         case sf::Keyboard::Key::Add:
             cameraSpeed += cameraSpeedStep;

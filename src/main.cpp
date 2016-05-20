@@ -38,6 +38,7 @@ int main()
 
     // Очередь для нажатых клавиш (т.к. у нас есть промежутки между апдейтами)
     std::queue<sf::Keyboard::Key> buttonsCache;
+    std::queue<sf::Event::MouseMoveEvent> mouseCache;
 
     bool isRunning = true;
     while (isRunning) {
@@ -54,6 +55,9 @@ int main()
                         isRunning = false;
                     }
                     break;
+                case sf::Event::MouseMoved:
+                    mouseCache.push(windowEvent.mouseMove);
+                    break;
                 default:
                     break;
             }
@@ -66,7 +70,7 @@ int main()
             elapsedTime += constTimeStep;
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-            gameSystem.Update(constTimeStep, buttonsCache);
+            gameSystem.Update(constTimeStep, buttonsCache, mouseCache);
 
             window.display();
         }
