@@ -51,7 +51,8 @@ set(SOURCE_FILES
         src/GameObjects/Line.cpp
         src/GameShaders.h
         src/GameShaders.cpp
-        )
+        src/GameObjects/Building.cpp
+        src/GameObjects/Building.h)
 
 add_executable(${EXECUTABLE_NAME} ${SOURCE_FILES})
 

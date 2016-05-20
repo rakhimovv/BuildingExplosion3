@@ -17,13 +17,13 @@
 #include "Line.h"
 #include "../Physics/AosParticleSystem.h"
 #include "../GameShaders.h"
+#include "Building.h"
 
 
 class Block;
-
+class Building;
 class Bomb;
 class Explosion;
-
 class Camera;
 
 /*
@@ -67,12 +67,18 @@ public:
 
     CubeRenderer *GetCubeRenderer();
 
+    GameGraphic *GetGameGraphic();
+
     Camera * GetCamera();
 
 private:
-    CachedArray<LinkLine> linkLine;
-    //CachedArray<LinkLine *> linkLine;
-    CachedArray<Block *> blocks;
+    enum Status {
+        MENU,
+        Cylinder,
+        Hyperboloid
+    };
+
+    Status currStatus;
     AosParticleSystem<ParticleInfo> * particleSystem;
     float constTimeStep;
     GameGraphic * gameGraphic;
@@ -82,6 +88,7 @@ private:
     Explosion * explosion;
     Camera * camera;
     Bomb * bomb;
+    Building * building;
 };
 
 
