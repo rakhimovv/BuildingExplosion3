@@ -1,6 +1,11 @@
+//#define GLEW_STATIC
+//#define SFML_STATIC
+//#define SFGUI_STATIC
+
 #include <GL/glew.h>
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
+//#include <SFGUI/SFGUI.hpp>
 #include "WindowSize.h"
 #include "GameObjects/GameSystem.h"
 #include <queue>
@@ -15,15 +20,15 @@ int main()
     //enterWindow.close();
 
     sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "BuildingExplosion3", sf::Style::Default,
-                            sf::ContextSettings(32, 8, 4, 3, 0));
-    //sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "BuildingExplosion3");
+                            sf::ContextSettings(32, 8, 4, 2, 0));
+//    sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "BuildingExplosion3");
+//    window.resetGLStates();
 
     sf::Clock gameClock;
     float elapsedTime = 0.0f;
     float lastUpdateTime = 0.0f;
     float constTimeStep = 1.0f / 60.0f;
 
-    /*
     glewExperimental = GL_TRUE;
     glewInit();
 
@@ -35,9 +40,10 @@ int main()
     glEnable(GL_MULTISAMPLE);
     glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
 
-    GameSystem gameSystem(constTimeStep);
+//    window.pushGLStates();
+//    GameSystem gameSystem(constTimeStep);
+//    window.popGLStates();
 
-     */
     // Очередь для нажатых клавиш (т.к. у нас есть промежутки между апдейтами)
     std::queue<sf::Keyboard::Key> buttonsCache;
 
@@ -96,12 +102,13 @@ int main()
                 menuNum = 3;
             }
 
-            //window.pushGLStates();
-            //window.resetGLStates();
+//            window.popGLStates();
+//            window.resetGLStates();
             window.draw(menuBg);
             window.draw(menu1);
             window.draw(menu2);
-            //window.popGLStates();
+
+//            window.pushGLStates();
 
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
                 if (menuNum == 1) {
@@ -117,8 +124,8 @@ int main()
             if (currTime - lastUpdateTime > constTimeStep) {
                 lastUpdateTime += constTimeStep;
                 elapsedTime += constTimeStep;
-                //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-                //gameSystem.Update(constTimeStep, buttonsCache);
+//                glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//                gameSystem.Update(constTimeStep, buttonsCache);
             }
         }
 
