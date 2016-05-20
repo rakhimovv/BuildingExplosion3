@@ -3,6 +3,7 @@
 //
 
 #define DEBUG
+#define NO_INDEX -1
 
 #include "GameParameters.h"
 #include <fstream>
@@ -50,6 +51,29 @@ GameParameters::GameParameters(const char * configFilePath) {
     loadFloatParameter(configRoot, "camera", "cameraSpeed", cameraSpeed);
     loadFloatParameter(configRoot, "camera", "cameraSpeedStep", cameraSpeedStep);
 
+    loadFloatParameter(configRoot, "camera", "cameraPos_x", cameraPos.x);
+    loadFloatParameter(configRoot, "camera", "cameraPos_y", cameraPos.y);
+    loadFloatParameter(configRoot, "camera", "cameraPos_z", cameraPos.z);
+
+    loadFloatParameter(configRoot, "camera", "cameraFront_x", cameraFront.x);
+    loadFloatParameter(configRoot, "camera", "cameraFront_y", cameraFront.y);
+    loadFloatParameter(configRoot, "camera", "cameraFront_z", cameraFront.z);
+
+    loadFloatParameter(configRoot, "camera", "cameraUp_x", cameraUp.x);
+    loadFloatParameter(configRoot, "camera", "cameraUp_y", cameraUp.y);
+    loadFloatParameter(configRoot, "camera", "cameraUp_z", cameraUp.z);
+
+    loadFloatParameter(configRoot, "camera", "cameraRight_x", cameraRight.x);
+    loadFloatParameter(configRoot, "camera", "cameraRight_y", cameraRight.y);
+    loadFloatParameter(configRoot, "camera", "cameraRight_z", cameraRight.z);
+
+    loadFloatParameter(configRoot, "camera", "cameraDir_x", cameraDirection.x);
+    loadFloatParameter(configRoot, "camera", "cameraDir_y", cameraDirection.y);
+    loadFloatParameter(configRoot, "camera", "cameraDir_z", cameraDirection.z);
+
+    loadFloatParameter(configRoot, "camera", "pitchAngle", pitchAngle);
+    loadFloatParameter(configRoot, "camera", "yawAngle", yawAngle);
+
     dumpParameters();
 }
 
@@ -79,6 +103,12 @@ void GameParameters::loadFloatParameter(const Json::Value& configRoot, const cha
 
     Json::Value parameterValue = configRoot[parameterType][parameterName];
 
+//    if (index == NO_INDEX) {
+//        parameterValue = configRoot[parameterType][parameterName];
+//    } else {
+//        parameterValue = configRoot[parameterType][parameterName][index];
+//    }
+
     if (parameterValue.isNull()) {
         throw std::invalid_argument("JSON::[" + std::string(parameterType) + "][" + std::string(parameterName) + "]");
     } else {
@@ -106,6 +136,26 @@ void GameParameters::dumpParameters()
 
     std::cout << "cameraSpeed: <" << cameraSpeed << ">" << std::endl;
     std::cout << "cameraSpeedStep: <" << cameraSpeedStep << ">" << std::endl;
+
+    std::cout << "cameraPos.x <" << cameraPos.x << ">" << std::endl;
+    std::cout << "cameraPos.y <" << cameraPos.y << ">" << std::endl;
+    std::cout << "cameraPos.z <" << cameraPos.z << ">" << std::endl;
+
+    std::cout << "cameraFront.x <" << cameraFront.x << ">" << std::endl;
+    std::cout << "cameraFront.y <" << cameraFront.y << ">" << std::endl;
+    std::cout << "cameraFront.z <" << cameraFront.z << ">" << std::endl;
+
+    std::cout << "cameraUp.x <" << cameraUp.x << ">" << std::endl;
+    std::cout << "cameraUp.y <" << cameraUp.y << ">" << std::endl;
+    std::cout << "cameraUp.z <" << cameraUp.z << ">" << std::endl;
+
+    std::cout << "cameraRight.x <" << cameraRight.x << ">" << std::endl;
+    std::cout << "cameraRight.y <" << cameraRight.y << ">" << std::endl;
+    std::cout << "cameraRight.z <" << cameraRight.z << ">" << std::endl;
+
+    std::cout << "cameraDir.x <" << cameraDirection.x << ">" << std::endl;
+    std::cout << "cameraDir.y <" << cameraDirection.y << ">" << std::endl;
+    std::cout << "cameraDir.z <" << cameraDirection.z << ">" << std::endl;
 
     std::cout << std::endl;
 }
@@ -168,4 +218,39 @@ float GameParameters::GetCameraSpeed()
 float GameParameters::GetCameraSpeedStep()
 {
     return this->cameraSpeedStep;
+}
+
+float GameParameters::GetPitchAngle()
+{
+    return this->pitchAngle;
+}
+
+float GameParameters::GetYawAngle()
+{
+    return this->yawAngle;
+}
+
+glm::vec3 GameParameters::GetCameraPos()
+{
+    return this->cameraPos;
+}
+
+glm::vec3 GameParameters::GetCameraFront()
+{
+    return this->cameraFront;
+}
+
+glm::vec3 GameParameters::GetCameraUp()
+{
+    return this->cameraUp;
+}
+
+glm::vec3 GameParameters::GetCameraRight()
+{
+    return this->cameraRight;
+}
+
+glm::vec3 GameParameters::GetCameraDir()
+{
+    return this->cameraDirection;
 }

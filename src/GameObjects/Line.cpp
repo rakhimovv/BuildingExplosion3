@@ -15,10 +15,12 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-Line::Line(glm::vec3& p0, glm::vec3& p1, glm::vec3& color, GameParameters& gameParameters):
+Line::Line(glm::vec3& p0, glm::vec3& p1, glm::vec3& color, GameShader * shader):
     pointOne(p0.x, p0.y, p0.z), pointTwo(p1.x, p1.y, p1.z), lineColor(color.x, color.y, color.z),
-    lineShader(gameParameters.GetLineVertexShader().c_str(), gameParameters.GetLineFragmentShader().c_str())
+    lineShader(shader)
 {
+    assert(this->lineShader);
+
     // First point vertices
     lineVertices.push_back(p0.x);
     lineVertices.push_back(p0.y);
@@ -73,10 +75,10 @@ void Line::render(Camera& camera)
 
     glm::mat4 modelViewProjection = projection * view * model;
 
-    lineShader.use();
+    lineShader->use();
 
-    GLuint mvpLocation = glGetUniformLocation(lineShader.getProgram(), "MVP");
-    GLuint colorLocation = glGetUniformLocation(lineShader.getProgram(), "ourColor");
+    GLuint mvpLocation = glGetUniformLocation(lineShader->getProgram(), "MVP");
+    GLuint colorLocation = glGetUniformLocation(lineShader->getProgram(), "ourColor");
 
     glUniformMatrix4fv(mvpLocation, 1, GL_FALSE, glm::value_ptr(modelViewProjection));
     glUniform3f(colorLocation, lineColor.x, lineColor.y, lineColor.z);

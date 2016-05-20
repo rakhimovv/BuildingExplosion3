@@ -9,6 +9,7 @@
 #include <vector>
 #include <iostream>
 #include <sstream>
+#include <glm/glm.hpp>
 
 #include "../dependencies/json/json.h"
 
@@ -30,6 +31,16 @@ public:
 
     float GetCameraSpeed();
     float GetCameraSpeedStep();
+
+    glm::vec3 GetCameraPos();
+    glm::vec3 GetCameraFront();
+    glm::vec3 GetCameraUp();
+    glm::vec3 GetCameraRight();
+    glm::vec3 GetCameraDir();
+
+    float GetPitchAngle();
+    float GetYawAngle();
+
 private:
     // Shader paths
     std::string cubeFragmentShaderPath;
@@ -47,6 +58,15 @@ private:
     //Camera options
     float cameraSpeed;
     float cameraSpeedStep;
+
+    glm::vec3 cameraPos;
+    glm::vec3 cameraFront;
+    glm::vec3 cameraUp;
+    glm::vec3 cameraRight;
+    glm::vec3 cameraDirection;
+
+    float pitchAngle;
+    float yawAngle;
 
     void loadStringParameter(const Json::Value& configRoot, const char * parameterType, const char * parameterName, std::string& stringValue);
     void loadFloatParameter(const Json::Value& configRoot, const char * parameterType, const char * parameterName, float & floatValue);

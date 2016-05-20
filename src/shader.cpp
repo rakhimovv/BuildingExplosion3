@@ -4,8 +4,8 @@
 #ifndef SHADER_CPP
 #define SHADER_CPP
 #define GLEW_STATIC
-#include <GL/glew.h>
 
+#include "shader.h"
 #include <SFML/OpenGL.hpp>
 
 #include <string>
@@ -14,8 +14,6 @@
 #include <vector>
 #include <stdlib.h>
 #include <assert.h>
-
-#include "shader.h"
 
 GameShader::GameShader(const char *vertex_file_path, const char *fragment_file_path)
 {

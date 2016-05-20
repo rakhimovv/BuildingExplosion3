@@ -13,14 +13,14 @@
 
 class CubeRenderer {
 public:
-    CubeRenderer(GameParameters &gameParameters);
+    CubeRenderer(GameShader * shader, GameParameters &gameParameters);
 
     ~CubeRenderer();
 
     void render(Cube &cube, Camera *camera);
 
 private:
-    GameShader cubeShader;
+    GameShader * cubeShader;
     std::vector<GLfloat> cubeVertices;
     GLuint vertexBufferObject;
     GLuint vertexArrayObject;

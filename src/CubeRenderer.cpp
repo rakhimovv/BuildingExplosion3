@@ -3,6 +3,7 @@
 //
 
 #include <GL/glew.h>
+#include <assert.h>
 
 #include <cstring>
 #include <glm/gtc/matrix_transform.hpp>
@@ -58,11 +59,12 @@ GLfloat vertices[] = {
         -1.0f,  1.0f, -1.0f,  0.0f, 1.0f
 };
 
-CubeRenderer::CubeRenderer(GameParameters& gameParameters):
-        cubeShader(gameParameters.GetCubeVertexShader().c_str(), gameParameters.GetCubeFragmentShader().c_str()),
+CubeRenderer::CubeRenderer(GameShader * shader, GameParameters& gameParameters):
+        cubeShader(shader),
         cubeVertices(std::begin(vertices), std::end(vertices)),
         projectionMatrix(glm::perspective(45.0f, (GLfloat) WIDTH / (GLfloat) HEIGHT, 0.1f, 100.0f))
 {
+    assert(shader);
 
     glGenVertexArrays(1, &vertexArrayObject);
     glGenBuffers(1, &vertexBufferObject);
@@ -97,7 +99,7 @@ CubeRenderer::~CubeRenderer()
 
 void CubeRenderer::render(Cube& cube, Camera * camera)//Coords3f coords, Camera * camera)
 {
-    cubeShader.use();
+    cubeShader->use();
 
     glm::mat4 model;
 
@@ -106,9 +108,9 @@ void CubeRenderer::render(Cube& cube, Camera * camera)//Coords3f coords, Camera 
     model = glm::scale(model, glm::vec3(cubeScaler, cubeScaler, cubeScaler));
 
     // Get their uniform location
-    GLint viewLoc = glGetUniformLocation(cubeShader.getProgram(), "view");
-    GLint projLoc = glGetUniformLocation(cubeShader.getProgram(), "projection");
-    GLint modelLoc = glGetUniformLocation(cubeShader.getProgram(), "model");
+    GLint viewLoc = glGetUniformLocation(cubeShader->getProgram(), "view");
+    GLint projLoc = glGetUniformLocation(cubeShader->getProgram(), "projection");
+    GLint modelLoc = glGetUniformLocation(cubeShader->getProgram(), "model");
     // Pass them to the shaders
     glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(camera->GetViewMatrix()));
     glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projectionMatrix));
@@ -117,7 +119,7 @@ void CubeRenderer::render(Cube& cube, Camera * camera)//Coords3f coords, Camera 
     glBindVertexArray(vertexArrayObject);
 
     glActiveTexture(GL_TEXTURE0_ARB);
-    glUniform1i(glGetUniformLocation(cubeShader.getProgram(), "wallTexture"), 0);
+    glUniform1i(glGetUniformLocation(cubeShader->getProgram(), "wallTexture"), 0);
     glBindTexture(GL_TEXTURE_2D, texture);
     glDrawArrays(GL_TRIANGLES, 0, 36);
 
@@ -151,4 +153,3 @@ int CubeRenderer::loadTexture(const GLchar * imagePath, GLuint * texture)
 
     return 0;
 }
-
