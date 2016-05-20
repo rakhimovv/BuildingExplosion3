@@ -29,7 +29,7 @@ void Bomb::Update(float dt) {
 
         Explosion::Descriptor explosionDesc;
         explosionDesc.maxRadius = 1.0f;
-        explosionDesc.totalLifetime = 10.0f;
+        explosionDesc.totalLifetime = 2.0f;
         explosionDesc.pos = particleHandle.GetPos();
 
         owner->SetExplosion(new Explosion(explosionDesc, owner));

@@ -34,7 +34,13 @@ void AosLink<UserInfo>::Solve(AosParticleSystem<UserInfo> *sys) {
 
     //std::cout << "cond: " << cond << "\n";
 
-    if (exists && cond > 0.005) {
+
+    // 0.005 0.2
+    // x stiffness
+
+
+
+    if (exists && cond > 0.0025 * stiffness) {
         std::cout << "UPSS! :)\n";
         exists = false;
     }

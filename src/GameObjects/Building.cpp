@@ -44,7 +44,7 @@ Building::Building(Building::Type buildingType, Vector3f minPoint, GameSystem *o
                     if (i != j && (jPos - iPos).Length() <= a + 0.2f) {
                         LinkLine l;
 
-                        l.linkId = owner->GetParticleSystem()->AddLink(iHandle, jHandle, 0.2f, 1.0f);
+                        l.linkId = owner->GetParticleSystem()->AddLink(iHandle, jHandle, 0.8f, 1.0f);
                         l.p0 = iHandle.GetParticleIndex();//this->particleSystem->GetLinks().back().particleId0;
                         l.p1 = jHandle.GetParticleIndex();
                         l.exists = true;
@@ -167,7 +167,8 @@ void Building::Update(float dt, GameSystem * owner) {
             //std::cout << "Update color: " << linkLine[i].linkId << "\n";
             //linkLine[i].line->dump();
             linkLine[i].exists = 0;
-            glm::vec3 color = glm::vec3(0.0f, 1.0f, 1.0f);
+            //glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f);
+            glm::vec3 color = glm::vec3(-1.0f, 1.0f, 1.0f);
             linkLine[i].line->updateColor(&color);
         }
     }

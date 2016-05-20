@@ -86,9 +86,11 @@ void Line::render(Camera& camera)
     glUniform3f(colorLocation, lineColor.x, lineColor.y, lineColor.z);
 
     // Рендерим
-    glBindVertexArray(vertexArrayObject);
-    glDrawArrays(GL_LINES, 0, 2);
-    glBindVertexArray(0);
+    if (lineColor.x != -1.0) {
+        glBindVertexArray(vertexArrayObject);
+        glDrawArrays(GL_LINES, 0, 2);
+        glBindVertexArray(0);
+    }
 }
 
 void Line::dump()
