@@ -76,6 +76,8 @@ void GameSystem::Update(float dt, std::queue<sf::Keyboard::Key> &pressedButtons)
     // Обновляем систему частиц
     particleSystem->Update();
 
+    std::cout << "\n\n\n\n\n";
+
     // Вернуть дефолтное значение ускорения
     for (size_t particleIndex = 0; particleIndex < particleSystem->GetParticlesCount(); particleIndex++) {
         particleSystem->GetParticle(particleIndex).SetAcceleration(Vector3f(0.0f, 0.0f, 0.0f));

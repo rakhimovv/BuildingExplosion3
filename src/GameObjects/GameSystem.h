@@ -47,11 +47,6 @@ class LinkLine {
 
 class GameSystem {
 public:
-    struct LinkLine {
-        size_t p0;
-        size_t p1;
-        Line * line;
-    };
 
     GameSystem(float constTimeStep);
 
