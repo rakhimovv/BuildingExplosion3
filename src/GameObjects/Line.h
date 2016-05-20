@@ -24,8 +24,7 @@ public:
     virtual std::vector<float>& getVertices();
     //! @overload
     virtual std::vector<int>& getIndexes();
-
-
+    //! @overload
     void render(Camera& camera);
 
     void dump();

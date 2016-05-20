@@ -44,5 +44,8 @@
 
     "cameraSpeed" : 0.0125,
     "cameraSpeedStep": 0.0025
+  },
+  "skybox": {
+    "scaleMultiplier": 2.0
   }
 }

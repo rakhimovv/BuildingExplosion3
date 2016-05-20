@@ -60,23 +60,18 @@ SkyBoxRenderer::SkyBoxRenderer(GameShader * shader, GameParameters& gameParamete
 {
     assert(cubeMapShader);
 
+    float scaler = gameParameters.GetSkyboxScale();
+
     projectionMatrix = glm::perspective(45.0f, (GLfloat)WIDTH / (GLfloat)HEIGHT, 0.01f, 500.0f);
-    modelMatrix = glm::scale(modelMatrix, glm::vec3(4.0f, 4.0f, 4.0f));
+    modelMatrix = glm::scale(modelMatrix, glm::vec3(scaler, scaler, scaler));
     modelMatrix = glm::translate(modelMatrix, glm::vec3(0.0f, 0.05f, 0.0f));
 
-//    boxFaces.push_back("data/hills_rt.tga");
-//    boxFaces.push_back("data/hills_lf.tga");
-//    boxFaces.push_back("data/hills_up.tga");
-//    boxFaces.push_back("data/hills_dn.tga");
-//    boxFaces.push_back("data/hills_bk.tga");
-//    boxFaces.push_back("data/hills_ft.tga");
-
-    boxFaces.push_back(gameParameters.GetSkyboxTextures()[0].c_str());
-    boxFaces.push_back(gameParameters.GetSkyboxTextures()[1].c_str());
-    boxFaces.push_back(gameParameters.GetSkyboxTextures()[2].c_str());
-    boxFaces.push_back(gameParameters.GetSkyboxTextures()[3].c_str());
-    boxFaces.push_back(gameParameters.GetSkyboxTextures()[4].c_str());
-    boxFaces.push_back(gameParameters.GetSkyboxTextures()[5].c_str());
+    boxFaces.push_back(gameParameters.GetSkyboxTextures()[0].c_str()); // right texture
+    boxFaces.push_back(gameParameters.GetSkyboxTextures()[1].c_str()); // left texture
+    boxFaces.push_back(gameParameters.GetSkyboxTextures()[2].c_str()); // up texture
+    boxFaces.push_back(gameParameters.GetSkyboxTextures()[3].c_str()); // down texture
+    boxFaces.push_back(gameParameters.GetSkyboxTextures()[4].c_str()); // back texture
+    boxFaces.push_back(gameParameters.GetSkyboxTextures()[5].c_str()); // front texture
 
     glGenVertexArrays(1, &skyboxVAO);
     glGenBuffers(1, &skyboxVBO);

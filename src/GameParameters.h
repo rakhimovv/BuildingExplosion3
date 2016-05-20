@@ -41,6 +41,8 @@ public:
     float GetPitchAngle();
     float GetYawAngle();
 
+    float GetSkyboxScale();
+
 private:
     // Shader paths
     std::string cubeFragmentShaderPath;
@@ -67,6 +69,8 @@ private:
 
     float pitchAngle;
     float yawAngle;
+
+    float skyboxScaleMultiplier;
 
     void loadStringParameter(const Json::Value& configRoot, const char * parameterType, const char * parameterName, std::string& stringValue);
     void loadFloatParameter(const Json::Value& configRoot, const char * parameterType, const char * parameterName, float & floatValue);

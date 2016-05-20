@@ -10,10 +10,13 @@
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "BuildingExplosion3", sf::Style::Default,
+    sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
+
+    sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT, desktop.bitsPerPixel), "BuildingExplosion3", sf::Style::Default,
                             sf::ContextSettings(32, 8, 4, 3, 0));
 
     sf::Clock gameClock;
+
     float elapsedTime = 0.0f;
     float lastUpdateTime = 0.0f;
     float constTimeStep = 1.0f / 60.0f;

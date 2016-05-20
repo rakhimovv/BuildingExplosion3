@@ -74,6 +74,12 @@ GameParameters::GameParameters(const char * configFilePath) {
     loadFloatParameter(configRoot, "camera", "pitchAngle", pitchAngle);
     loadFloatParameter(configRoot, "camera", "yawAngle", yawAngle);
 
+    loadFloatParameter(configRoot, "skybox", "scaleMultiplier", skyboxScaleMultiplier);
+
+    if (skyboxScaleMultiplier < 0) {
+        throw std::invalid_argument("JSON::ERROR:: skybox scale multiplier must be positive!");
+    }
+
     dumpParameters();
 }
 
@@ -102,12 +108,6 @@ void GameParameters::loadFloatParameter(const Json::Value& configRoot, const cha
     assert(parameterName);
 
     Json::Value parameterValue = configRoot[parameterType][parameterName];
-
-//    if (index == NO_INDEX) {
-//        parameterValue = configRoot[parameterType][parameterName];
-//    } else {
-//        parameterValue = configRoot[parameterType][parameterName][index];
-//    }
 
     if (parameterValue.isNull()) {
         throw std::invalid_argument("JSON::[" + std::string(parameterType) + "][" + std::string(parameterName) + "]");
@@ -156,6 +156,8 @@ void GameParameters::dumpParameters()
     std::cout << "cameraDir.x <" << cameraDirection.x << ">" << std::endl;
     std::cout << "cameraDir.y <" << cameraDirection.y << ">" << std::endl;
     std::cout << "cameraDir.z <" << cameraDirection.z << ">" << std::endl;
+
+    std::cout << "scaleMultiplier <" << skyboxScaleMultiplier << ">" << std::endl;
 
     std::cout << std::endl;
 }
@@ -253,4 +255,9 @@ glm::vec3 GameParameters::GetCameraRight()
 glm::vec3 GameParameters::GetCameraDir()
 {
     return this->cameraDirection;
+}
+
+float GameParameters::GetSkyboxScale()
+{
+    return this->skyboxScaleMultiplier;
 }

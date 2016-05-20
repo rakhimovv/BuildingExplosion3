@@ -20,19 +20,12 @@ Camera::Camera(GameParameters& gameParameters): viewMatrix(), projectionMatrix()
     pitchAngleStep = glm::radians(80.0f);
 
     cameraPos = gameParameters.GetCameraPos();
-//    glm::vec3 cameraTarget = glm::vec3(10.0f, 0.0f, -10.0f);
 
     cameraDirection = gameParameters.GetCameraDir();
-//    cameraDirection = glm::normalize(cameraPos - cameraTarget);
 
     cameraUp = gameParameters.GetCameraUp();
     cameraRight = gameParameters.GetCameraRight();
     cameraFront = gameParameters.GetCameraFront();
-
-////    cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
-//    cameraRight = glm::normalize(glm::cross(cameraUp, cameraDirection));
-//    cameraUp = glm::normalize(glm::cross(cameraDirection, cameraRight));
-//    cameraFront = glm::vec3(0.0f, 0.0f, 1.0f);
 
     this->viewMatrix = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 
