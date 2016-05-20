@@ -10,6 +10,8 @@ public:
     struct LinkLine {
         size_t p0;
         size_t p1;
+        size_t linkId;
+        bool exists;
         Line * line;
     };
 
@@ -22,7 +24,7 @@ public:
 
     ~Building();
 
-    void Update(float dt);
+    void Update(float dt, GameSystem * owner);
 
     void Render(GameSystem *owner, Camera * camera);
 

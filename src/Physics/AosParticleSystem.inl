@@ -24,9 +24,9 @@ void AosLink<UserInfo>::Solve(AosParticleSystem<UserInfo> *sys) {
     AosParticle<UserInfo> *p0 = &(sys->GetParticleById(particleId0));
     AosParticle<UserInfo> *p1 = &(sys->GetParticleById(particleId1));
     Vector3f delta = p1->pos - p0->pos;
-    std::cout << "delta: " << delta.Length() << "\n";
+    //std::cout << "delta: " << delta.Length() << "\n";
     Vector3f dir = delta * (1.0f / delta.Length());
-    std::cout << "delta - def: " << (delta.Length() - defLength) / defLength << "\n";
+    //std::cout << "delta - def: " << (delta.Length() - defLength) / defLength << "\n";
 
     if (delta.Length() > 0.3) {
         exists = false;
@@ -206,6 +206,6 @@ void AosParticleSystem<UserInfo>::SetBounds(Vector3f minPoint, Vector3f maxPoint
 }
 
 template<typename UserInfo>
-std::vector<AosLink<UserInfo> > AosParticleSystem<UserInfo>::GetLinks() {
-    return this->links;
+bool AosParticleSystem<UserInfo>::IsLinkExists(size_t id) {
+    return links[id].exists;
 }

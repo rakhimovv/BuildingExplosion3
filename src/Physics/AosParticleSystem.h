@@ -80,7 +80,7 @@ public:
 
     AosParticle<UserInfo> &GetParticleById(size_t particleId);
 
-    std::vector<AosLink<UserInfo> > GetLinks();
+    bool IsLinkExists(size_t id);
 
 private:
     float dt;

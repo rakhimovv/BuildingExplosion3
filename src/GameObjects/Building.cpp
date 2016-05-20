@@ -44,10 +44,10 @@ Building::Building(Building::Type buildingType, Vector3f minPoint, GameSystem *o
                     if (i != j && (jPos - iPos).Length() <= a + 0.2f) {
                         LinkLine l;
 
-                        owner->GetParticleSystem()->AddLink(iHandle, jHandle, 0.2f, 1.0f);
-
+                        l.linkId = owner->GetParticleSystem()->AddLink(iHandle, jHandle, 0.2f, 1.0f);
                         l.p0 = iHandle.GetParticleIndex();//this->particleSystem->GetLinks().back().particleId0;
                         l.p1 = jHandle.GetParticleIndex();
+                        l.exists = true;
 
                         glm::vec3 pos0(iPos.x, iPos.y, iPos.z);
                         glm::vec3 pos1(jPos.x, jPos.y, jPos.z);
@@ -142,7 +142,7 @@ Building::~Building() {
     }
 }
 
-void Building::Update(float dt) {
+void Building::Update(float dt, GameSystem * owner) {
     // Удаляем несуществующие объекты
     for (size_t blockIndex = 0; blockIndex < blocks.GetElementsCount(); blockIndex++) {
         if (!blocks[blockIndex]->Exists()) {
@@ -159,6 +159,17 @@ void Building::Update(float dt) {
     // Обновляем блоки
     for (size_t objectIndex = 0; objectIndex < blocks.GetElementsCount(); objectIndex++) {
         blocks[objectIndex]->Update(dt);
+    }
+
+    // Если связь оборвалась => меняем цвет
+    for (size_t i = 0; i < linkLine.GetElementsCount(); i++) {
+        if (linkLine[i].exists && !((AosParticleSystem<ParticleInfo> *) owner->GetParticleSystem())->IsLinkExists(linkLine[i].linkId)) {
+            //std::cout << "Update color: " << linkLine[i].linkId << "\n";
+            //linkLine[i].line->dump();
+            linkLine[i].exists = 0;
+            glm::vec3 color = glm::vec3(0.0f, 1.0f, 1.0f);
+            linkLine[i].line->updateColor(&color);
+        }
     }
 }
 

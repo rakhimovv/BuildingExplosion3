@@ -76,7 +76,7 @@ void GameSystem::Update(float dt, std::queue<sf::Keyboard::Key> &pressedButtons)
     // Обновляем систему частиц
     particleSystem->Update();
 
-    std::cout << "\n\n\n\n\n";
+    //std::cout << "\n\n\n\n\n";
 
     // Вернуть дефолтное значение ускорения
     for (size_t particleIndex = 0; particleIndex < particleSystem->GetParticlesCount(); particleIndex++) {
@@ -84,7 +84,7 @@ void GameSystem::Update(float dt, std::queue<sf::Keyboard::Key> &pressedButtons)
     }
 
     // Обновляем здание
-    building->Update(dt);
+    building->Update(dt, this);
 
     // Обновить бомбу
     if (bomb && bomb->Exists()) {

@@ -81,6 +81,8 @@ void Line::render(Camera& camera)
     GLuint colorLocation = glGetUniformLocation(lineShader->getProgram(), "ourColor");
 
     glUniformMatrix4fv(mvpLocation, 1, GL_FALSE, glm::value_ptr(modelViewProjection));
+    //lineColor = glm::vec3(0.0, 1.0, 1.0);
+    //dump();
     glUniform3f(colorLocation, lineColor.x, lineColor.y, lineColor.z);
 
     // Рендерим
@@ -91,10 +93,13 @@ void Line::render(Camera& camera)
 
 void Line::dump()
 {
+    /*
     std::cout << "DEBUG::LINE:: vertices: " << lineVertices.size() << std::endl;
     for (int i = 0; i < lineVertices.size(); i++) {
         std::cout << "[" << lineVertices[i] << "]" << std::endl;
     }
+     */
+    std::cout << lineColor.x << " " << lineColor.y << " " << lineColor.z << "\n";
 }
 
 void Line::update(glm::vec3 * newPointOne, glm::vec3 * newPointTwo)
@@ -144,4 +149,9 @@ void Line::updateColor(glm::vec3 * newColor)
     lineColor.x = newColor->x;
     lineColor.y = newColor->y;
     lineColor.z = newColor->z;
+
+
+    assert(lineColor.x == newColor->x);
+    assert(lineColor.y == newColor->y);
+    assert(lineColor.z == newColor->z);
 }
