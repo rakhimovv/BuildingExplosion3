@@ -60,6 +60,8 @@ public:
 
     ParticleSystem<ParticleInfo> *GetParticleSystem();
 
+    void BuildCylinder(int H, int N, float R1, float edge, Vector3f color);
+
     void SetExplosion(Explosion *explosion);
 
     SkyBoxRenderer *GetSkyBoxRenderer();

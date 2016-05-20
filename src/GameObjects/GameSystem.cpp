@@ -12,6 +12,58 @@ class LineRenderer;
 const Vector3f minPoint = Vector3f(-15.0f, -1.0f, -15.0f);
 const Vector3f maxPoint = Vector3f(15.0f, 15.0f, 15.0f);
 
+void GameSystem::BuildCylinder(int H, int N, float R1, float edge, Vector3f color) {
+    double alpha = 2.0f * M_PI / (N - 1.0f);
+    glm::vec3 gcolor = glm::vec3(color.x, color.y, color.z);
+
+    double a = R1 * sin(alpha) / sin(90.0 - alpha / 2.0);
+
+    for (float z = 0; z < H; z += a) {
+        for (int i = 0; i < N; i++) {
+            double beta = alpha * (i * 1.0f);
+            float x = cosf(beta);
+            float y = sinf(beta);
+
+            Block::Descriptor blockDesc;
+            Vector3f pos = Vector3f(x * R1, minPoint.y + edge / 2.0f + z, y * R1);
+            blockDesc.vertexPositions.push_back(pos);
+            blockDesc.edgeLength = edge;
+            blocks.Add(new Block(blockDesc, this));
+        }
+    }
+
+    // Добавим связи между блоками (не внутри них!)
+
+    for (int i = 0; i < blocks.GetElementsCount(); i++) {
+
+        auto iHandle = *blocks.GetByIndex(i)->GetParticleHandle(0);
+        Vector3f iPos = iHandle.GetPos();
+
+        for (int j = 0; j < blocks.GetElementsCount(); j++) {
+            auto jHandle = *blocks.GetByIndex(j)->GetParticleHandle(0);
+            Vector3f jPos = jHandle.GetPos();
+
+            //if (i != j && (jPos - iPos).Length() < std::sqrt(2.0f) * empty + 0.1) {
+            //if (i != j) {
+            if (i != j && (jPos - iPos).Length() <= a + 0.2f) {
+                LinkLine l;
+
+                GetParticleSystem()->AddLink(iHandle, jHandle, 0.2f, 1.0f);
+
+                l.p0 = iHandle.GetParticleIndex();//this->particleSystem->GetLinks().back().particleId0;
+                l.p1 = jHandle.GetParticleIndex();
+
+                glm::vec3 pos0(iPos.x, iPos.y, iPos.z);
+                glm::vec3 pos1(jPos.x, jPos.y, jPos.z);
+
+                l.line = new Line(pos0, pos1, gcolor, gameParameters);
+
+                linkLine.Add(l);
+            }
+        }
+    }
+}
+
 GameSystem::GameSystem(float constTimeStep) : gameParameters("data/gameconfig.json") {
     // load config
 
@@ -24,9 +76,6 @@ GameSystem::GameSystem(float constTimeStep) : gameParameters("data/gameconfig.js
     // Инициалиазация openGl для примитивов в классах обернута
     this->skyBoxRenderer = new SkyBoxRenderer(gameParameters);
     this->cubeRenderer = new CubeRenderer(gameParameters);
-
-    glm::vec3 color = glm::vec3(1.0f, 0.0f, 0.0f);
-    glm::vec3 center = glm::vec3(0.0f, 0.0f, 0.0f);
 
     // this->sphere = new Sphere(&center, 0.5f, &color, gameParameters);
 
@@ -68,79 +117,21 @@ GameSystem::GameSystem(float constTimeStep) : gameParameters("data/gameconfig.js
     int H = 7;
     int N = 7;
     float R1 = 0.4f;
-    float R2 = 0.7f;
     float edge = 0.05f;
-    double alpha = 2.0f * M_PI / (N - 1.0f);
 
-    double a = R1 * sin(alpha) / sin(90.0 - alpha / 2.0);
-
-    for (float z = 0; z < H; z += a) {
-        for(int i = 0; i < N; i++) {
-            double beta = alpha * (i * 1.0f);
-            float x = cosf(beta);
-            float y = sinf(beta);
-
-            Block::Descriptor blockDesc;
-            Vector3f pos = Vector3f(x * R1, minPoint.y + edge / 2.0f + z, y * R1);
-            blockDesc.vertexPositions.push_back(pos);
-            blockDesc.edgeLength = edge;
-            blocks.Add(new Block(blockDesc, this));
-
-            /*
-            Block::Descriptor blockDesc1;
-            Vector3f pos1 = Vector3f(x * R2, minPoint.y + edge / 2.0f + z, y * R2);
-            blockDesc1.vertexPositions.push_back(pos1);
-            blockDesc1.edgeLength = edge;
-            blocks.Add(new Block(blockDesc, this));
-             */
-        }
-    }
+    BuildCylinder(H, N, R1, edge, Vector3f(1.0f, 0.0f, 0.0f));
 
     // Создадим бомбу
     Bomb::Descriptor bombDesc;
     bombDesc.edgeLength = 2.0f * edge;
     bombDesc.pos = Vector3f(0.0f, H / 3.0f, 0.0f);
     bomb = new Bomb(bombDesc, this);
-
-    // Добавим связи между блоками (не внутри них!)
-
-
-    for (int i = 0; i < blocks.GetElementsCount(); i++) {
-
-        auto iHandle = *blocks.GetByIndex(i)->GetParticleHandle(0);
-        Vector3f iPos = iHandle.GetPos();
-
-        for (int j = 0; j < blocks.GetElementsCount(); j++) {
-            auto jHandle = *blocks.GetByIndex(j)->GetParticleHandle(0);
-            Vector3f jPos = jHandle.GetPos();
-
-            //if (i != j && (jPos - iPos).Length() < std::sqrt(2.0f) * empty + 0.1) {
-            //if (i != j) {
-            if (i != j && (jPos - iPos).Length() <= a + 0.2f) {
-                LinkLine l;
-
-                GetParticleSystem()->AddLink(iHandle, jHandle, 0.2f, 1.0f);
-
-                l.p0 = iHandle.GetParticleIndex();//this->particleSystem->GetLinks().back().particleId0;
-                l.p1 = jHandle.GetParticleIndex();
-
-                glm::vec3 pos0(iPos.x, iPos.y, iPos.z);
-                glm::vec3 pos1(jPos.x, jPos.y, jPos.z);
-                Line line(pos0, pos1, color, gameParameters);
-
-                l.line = new Line(pos0, pos1, color, gameParameters);
-
-                linkLine.Add(l);
-            }
-        }
-    }
 }
 
 GameSystem::~GameSystem() {
     for (size_t blockIndex = 0; blockIndex < blocks.GetElementsCount(); blockIndex++) {
         delete blocks[blockIndex];
     }
-
 
     for (size_t blockIndex = 0; blockIndex < linkLine.GetElementsCount(); blockIndex++) {
         delete linkLine[blockIndex].line;
