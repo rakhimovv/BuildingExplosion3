@@ -40,7 +40,7 @@ Block::~Block() {
 void Block::Update(float dt) {
     // Добавляем гравитацию
     for (int i = 0; i < particleHandles.size(); i++) {
-        this->particleHandles[i].SetAcceleration(Vector3f(0.0f, -0.1f, 0.0f));
+        //this->particleHandles[i].SetAcceleration(Vector3f(0.0f, -0.1f, 0.0f));
     }
 }
 
