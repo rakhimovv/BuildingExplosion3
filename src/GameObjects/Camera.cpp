@@ -10,6 +10,9 @@
 
 Camera::Camera(GameParameters& gameParameters): viewMatrix(), projectionMatrix()
 {
+    prevMousePos = glm::vec2(0.0f, 0.0f);
+    mousePos = glm::vec2(0.0f, 0.0f);
+
     cameraSpeed = gameParameters.GetCameraSpeed();
     cameraSpeedStep = gameParameters.GetCameraSpeedStep();
 
@@ -39,7 +42,7 @@ Camera::Camera(GameParameters& gameParameters): viewMatrix(), projectionMatrix()
     this->projectionMatrix = glm::perspective(20.0f, (GLfloat)WIDTH / (GLfloat)HEIGHT, 0.1f, 100.0f);
 }
 
-void Camera::MoveCamera(std::queue<sf::Keyboard::Key>& pressedButtons) {
+void Camera::MoveCamera(std::queue<sf::Keyboard::Key>& pressedButtons, std::queue<sf::Event::MouseMoveEvent>& mouseMoves) {
 //    std::cout << "Camera moved" << std::endl;
 
     // Используем очередь
@@ -48,6 +51,36 @@ void Camera::MoveCamera(std::queue<sf::Keyboard::Key>& pressedButtons) {
         ModifyCamera(pressedButtons.front());
         pressedButtons.pop();
     }
+
+
+    while(!mouseMoves.empty()) {
+        std::cout << "Mouse moved" << std::endl;
+
+        mousePos = glm::vec2(mouseMoves.front().x, mouseMoves.front().y);
+
+        std::cout << "MousePos.x = " << mousePos.x << " MousePos.y = " << mousePos.y << std::endl;
+
+        pitchAngle += (-mousePos.y + prevMousePos.y) * 0.25f;
+        yawAngle += (mousePos.x - prevMousePos.x) * 0.25f;
+
+        prevMousePos = mousePos;
+
+        pitchAngle *= 1.0f;
+        yawAngle *= 1.0f;
+
+        mouseMoves.pop();
+    }
+
+    if(pitchAngle > 89.0f)
+        pitchAngle = 89.0f;
+    if(pitchAngle < -89.0f)
+        pitchAngle = -89.0f;
+
+    cameraFront.x = cos(glm::radians(yawAngle)) * cos(glm::radians(pitchAngle));
+    cameraFront.y = sin(glm::radians(pitchAngle));
+    cameraFront.z = sin(glm::radians(yawAngle)) * cos(glm::radians(pitchAngle));
+
+    cameraFront = glm::normalize(cameraFront);
 }
 
 void Camera::ModifyCamera(sf::Keyboard::Key button)
@@ -86,18 +119,6 @@ void Camera::ModifyCamera(sf::Keyboard::Key button)
         default:
             break;
     }
-
-    cameraFront.x = cos(glm::radians(yawAngle)) * cos(glm::radians(pitchAngle));
-    cameraFront.y = sin(glm::radians(pitchAngle));
-    cameraFront.z = sin(glm::radians(yawAngle)) * cos(glm::radians(pitchAngle));
-
-    cameraFront = glm::normalize(cameraFront);
-
-
-    if(pitchAngle > 89.0f)
-        pitchAngle = 89.0f;
-    if(pitchAngle < -89.0f)
-        pitchAngle = -89.0f;
 }
 
 const glm::mat4&  Camera::GetViewMatrix() {

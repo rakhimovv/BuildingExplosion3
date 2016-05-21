@@ -52,7 +52,7 @@ public:
 
     ~GameSystem();
 
-    void Update(float dt, std::queue<sf::Keyboard::Key>& pressedButtons);
+    void Update(float dt, std::queue<sf::Keyboard::Key>& pressedButtons, std::queue<sf::Event::MouseMoveEvent>& moves);
 
     ParticleSystem<ParticleInfo> *GetParticleSystem();
 

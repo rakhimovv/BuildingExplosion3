@@ -71,7 +71,7 @@ void GameSystem::SetExplosion(Explosion *explosion) {
     this->explosion = explosion;
 }
 
-void GameSystem::Update(float dt, std::queue<sf::Keyboard::Key> &pressedButtons) {
+void GameSystem::Update(float dt, std::queue<sf::Keyboard::Key> &pressedButtons, std::queue<sf::Event::MouseMoveEvent>& mouseMoves) {
 
     // Обновляем систему частиц
     particleSystem->Update();
@@ -103,7 +103,7 @@ void GameSystem::Update(float dt, std::queue<sf::Keyboard::Key> &pressedButtons)
     }
 
     // Отрисовка
-    camera->MoveCamera(pressedButtons);
+    camera->MoveCamera(pressedButtons, mouseMoves);
 
     this->skyBoxRenderer->render(this->camera);
 
