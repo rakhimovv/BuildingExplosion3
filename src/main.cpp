@@ -67,7 +67,7 @@ sfg::Window::Ptr enableSFGUI(sf::RenderWindow &window, GameSystem *gameSystem) {
     sfg::Button::Ptr map3 = sfg::Button::Create("New bomb");
     sfg::Button::Ptr boom = sfg::Button::Create("BOOM");
     sfg::Button::Ptr ext = sfg::Button::Create("exit");
-    Scale = sfg::Scale::Create(0.f, 100.f, 1.f, sfg::Scale::Orientation::HORIZONTAL);
+    Scale = sfg::Scale::Create(0.f, 10.f, 1.f, sfg::Scale::Orientation::HORIZONTAL);
     sfg::CheckButton::Ptr check = sfg::CheckButton::Create("Check me");
 
     ext->SetId("BUTTON5");

@@ -191,8 +191,8 @@ void Building::Update(float dt, GameSystem * owner) {
             //std::cout << "Update color: " << linkLine[i].linkId << "\n";
             //linkLine[i].line->dump();
             linkLine[i].exists = 0;
-            glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f);
-            //glm::vec3 color = glm::vec3(-1.0f, 1.0f, 1.0f);
+            //glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f);
+            glm::vec3 color = glm::vec3(-1.0f, 1.0f, 1.0f);
             linkLine[i].line->updateColor(&color);
         }
     }
