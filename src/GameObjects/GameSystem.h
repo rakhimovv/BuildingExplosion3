@@ -70,7 +70,7 @@ public:
 
     void OnHyperboloid();
 
-    void OnNewBomb();
+    void OnNewBomb(float force);
 
     void OnBoom();
 

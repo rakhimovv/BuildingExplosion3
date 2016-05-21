@@ -14,6 +14,7 @@
 #include "GameParameters.h"
 
 GameSystem *menuSystem;
+sfg::Scale::Ptr Scale;
 
 void OnCylinder() {
     std::cout << "Something1\n";
@@ -27,7 +28,7 @@ void OnHyperboloid() {
 
 void OnNewBomb() {
     std::cout << "Something3\n";
-    menuSystem->OnNewBomb();
+    menuSystem->OnNewBomb(Scale->GetValue());
 }
 
 void OnExit() {
@@ -36,6 +37,7 @@ void OnExit() {
 }
 
 void OnBoom() {
+    //explosionOffset = Scale->GetValue();
     menuSystem->OnBoom();
     std::cout << "KABOOOOM\n";
 }
@@ -65,7 +67,7 @@ sfg::Window::Ptr enableSFGUI(sf::RenderWindow &window, GameSystem *gameSystem) {
     sfg::Button::Ptr map3 = sfg::Button::Create("New bomb");
     sfg::Button::Ptr boom = sfg::Button::Create("BOOM");
     sfg::Button::Ptr ext = sfg::Button::Create("exit");
-    auto Scale = sfg::Scale::Create(0.f, 100.f, 1.f, sfg::Scale::Orientation::HORIZONTAL);
+    Scale = sfg::Scale::Create(0.f, 100.f, 1.f, sfg::Scale::Orientation::HORIZONTAL);
     sfg::CheckButton::Ptr check = sfg::CheckButton::Create("Check me");
 
     ext->SetId("BUTTON5");
@@ -90,10 +92,11 @@ sfg::Window::Ptr enableSFGUI(sf::RenderWindow &window, GameSystem *gameSystem) {
     ext->GetSignal(sfg::Button::OnLeftClick).Connect(OnExit);//gameSystem->OnExit());
 
     guiWindow->Add(table);
+    guiWindow->SetAllocation(sf::FloatRect(0.0, 0.0, 400.0, 200.0));
 
     sfg::Desktop desktopx;
     guiWindow->SetId("DESKTOP");
-    guiWindow->SetPosition(sf::Vector2f(200, 400));
+    //guiWindow->SetPosition(sf::Vector2f(200, 400));
     desktopx.SetProperty("Button#BUTTON5", "BackgroundColor", sf::Color(175, 0, 0, 200));
     desktopx.SetProperty("Button#BUTTON5", "BorderWidth", 1.f);
     desktopx.SetProperty("Window", "BackgroundColor", sf::Color(80, 80, 80, 100));
@@ -143,7 +146,7 @@ int main()
 
     sfg::SFGUI sfgui;
     sfg::Window::Ptr guiWindow = enableSFGUI(window2, &gameSystem);
-    auto Scale = sfg::Scale::Create(0.f, 100.f, 1.f, sfg::Scale::Orientation::HORIZONTAL);
+    //auto Scale = sfg::Scale::Create(0.f, 100.f, 1.f, sfg::Scale::Orientation::HORIZONTAL);
 
 
     // Очередь для нажатых клавиш (т.к. у нас есть промежутки между апдейтами)
@@ -178,7 +181,9 @@ int main()
             }
         }
 
-        float number(Scale->GetValue());
+        //float number(Scale->GetValue());
+        //std::cout << "number" << number << "\n";
+        //explosionOffset = Scale->GetValue();
 
         //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         window.clear();

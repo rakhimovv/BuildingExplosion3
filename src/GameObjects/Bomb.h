@@ -17,6 +17,7 @@ public:
         Descriptor();
         Vector3f pos;
         float edgeLength;
+        float force;
     };
 
     Bomb(const Descriptor &desc, GameSystem *owner);
@@ -34,6 +35,7 @@ private:
     float edgeLength;
     ParticleHandle<ParticleInfo> particleHandle;
     bool exists;
+    float force;
 };
 
 

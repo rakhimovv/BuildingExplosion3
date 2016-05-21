@@ -13,6 +13,7 @@ Bomb::Bomb(const Descriptor &desc, GameSystem *owner) {
     this->owner = owner;
     this->edgeLength = desc.edgeLength;
     this->particleHandle = owner->GetParticleSystem()->AddParticle(desc.pos, desc.edgeLength / 2.0f, false);
+    this->force = desc.force;
 }
 
 Bomb::~Bomb() {
@@ -31,6 +32,7 @@ void Bomb::Boom(float dt) {
         explosionDesc.maxRadius = 1.0f;
         explosionDesc.totalLifetime = 2.0f;
         explosionDesc.pos = particleHandle.GetPos();
+        explosionDesc.force = force;
 
         owner->SetExplosion(new Explosion(explosionDesc, owner));
     }

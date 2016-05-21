@@ -14,6 +14,7 @@ Explosion::Explosion(const Descriptor &desc, GameSystem *owner) {
     this->pos = desc.pos;
     this->totalLifetime = desc.totalLifetime;
     this->elapsedLifetime = desc.totalLifetime;
+    this->force = desc.force;
 }
 
 Explosion::~Explosion() { }
@@ -33,7 +34,8 @@ void Explosion::Update(float dt) {
 
         Vector3f distance = blockParticle.GetPos() - this->pos;
         //if (distance.Length() <= currRadius) {
-        float force = 1.0f;
+        //this->force = desc.force;
+        //float force = 1.0f;
         float a = distance.Length();
         float offset = force / (a * a * a);
         Vector3f resultAcceleration = blockParticle.GetAcceleration() + offset * distance.GetNorm();

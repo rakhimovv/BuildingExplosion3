@@ -104,7 +104,7 @@ void GameSystem::OnHyperboloid() {
     building = new Building(Building::Type::Hyperboloid, minPoint, this, edge, N, H, R1);
 }
 
-void GameSystem::OnNewBomb() {
+void GameSystem::OnNewBomb(float force) {
     delete explosion;
     delete bomb;
     explosion = 0;
@@ -114,6 +114,7 @@ void GameSystem::OnNewBomb() {
     bombDesc.edgeLength = 2.0f * edge;
     //bombDesc.pos = Vector3f(0.0f, H / 3.0f, 0.0f);
     bombDesc.pos = Vector3f(0.0f, 1.5f, 0.0f);
+    bombDesc.force = force;
     bomb = new Bomb(bombDesc, this);
 }
 

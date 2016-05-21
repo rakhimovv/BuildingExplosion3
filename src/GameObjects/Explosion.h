@@ -19,6 +19,7 @@ public:
         float maxRadius;
         Vector3f pos;
         float totalLifetime;
+        float force;
     };
 
     Explosion(const Descriptor &desc, GameSystem *owner);
@@ -32,6 +33,7 @@ public:
     bool Exists();
 
 private:
+    float force;
     GameSystem *owner;
     float maxRadius;
     Vector3f pos;
