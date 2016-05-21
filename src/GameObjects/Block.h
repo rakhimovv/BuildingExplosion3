@@ -24,6 +24,7 @@ public:
 
         std::vector<Vector3f> vertexPositions;
         float edgeLength;
+        bool fixed = false;
     };
 
     Block(const Descriptor &desc, GameSystem *owner);

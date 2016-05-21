@@ -26,7 +26,8 @@ class AosLink {
 public:
     AosLink() { }
 
-    AosLink(size_t particleId0, size_t particleId1, float stiffness, float stretch, AosParticleSystem<UserInfo> *sys);
+    AosLink(size_t particleId0, size_t particleId1, float condConst, float stiffness, float stretch,
+            AosParticleSystem<UserInfo> *sys);
 
     void Solve(AosParticleSystem<UserInfo> *sys);
 
@@ -35,6 +36,8 @@ public:
 
     float defLength;
     float stiffness;
+
+    float condConst;
 
     bool exists;
 };
@@ -46,7 +49,8 @@ public:
 
     void Update();
 
-    size_t AddLink(ParticleHandle<UserInfo> particle0, ParticleHandle<UserInfo> particle1, float stiffness = 0.5f,
+    size_t AddLink(ParticleHandle<UserInfo> particle0, ParticleHandle<UserInfo> particle1, float condConst,
+                   float stiffness = 0.5f,
                    float stretch = 1.0f);
 
     ParticleHandle<UserInfo> AddParticle(Vector3f pos, float radius = 20.0f, bool isFixed = false);

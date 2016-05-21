@@ -33,7 +33,7 @@ void Explosion::Update(float dt) {
 
         Vector3f distance = blockParticle.GetPos() - this->pos;
         //if (distance.Length() <= currRadius) {
-        float force = 0.3f;
+        float force = 1.0f;
         float a = distance.Length();
         float offset = force / (a * a * a);
         Vector3f resultAcceleration = blockParticle.GetAcceleration() + offset * distance.GetNorm();

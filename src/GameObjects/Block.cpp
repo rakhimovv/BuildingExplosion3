@@ -14,19 +14,9 @@ Block::Block(const Descriptor &desc, GameSystem *owner) {
 
     // Создаем частицы
     for (int i = 0; i < desc.vertexPositions.size(); i++) {
-        particleHandles.push_back(owner->GetParticleSystem()->AddParticle(desc.vertexPositions[i], edgeLength / 2.0f, false));
+        particleHandles.push_back(
+                owner->GetParticleSystem()->AddParticle(desc.vertexPositions[i], edgeLength / 2.0f, desc.fixed));
     }
-
-    /*
-    // Добавляем связи
-    for (int i = 0; i < particleHandles.size(); i++) {
-        for (int j = 0; j < particleHandles.size(); j++) {
-            if (i != j) {
-                this->owner->GetParticleSystem()->AddLink(this->particleHandles[i], this->particleHandles[j]);
-            }
-        }
-    }
-     */
 }
 
 Block::~Block() {
@@ -40,7 +30,7 @@ Block::~Block() {
 void Block::Update(float dt) {
     // Добавляем гравитацию
     for (int i = 0; i < particleHandles.size(); i++) {
-        //this->particleHandles[i].SetAcceleration(Vector3f(0.0f, -0.1f, 0.0f));
+        this->particleHandles[i].SetAcceleration(Vector3f(0.0f, -0.1f, 0.0f));
     }
 }
 

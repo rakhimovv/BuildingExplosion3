@@ -56,6 +56,7 @@ public:
     virtual void Update() = 0;
 
     virtual size_t AddLink(ParticleHandle<UserInfo> particleHandle0, ParticleHandle<UserInfo> particleHandle1,
+                           float condConst,
                            float stiffness = 0.5f, float stretch = 1.0f) = 0;
 
     virtual ParticleHandle<UserInfo> AddParticle(Vector3f pos, float radius = 20.0f, bool isFixed = false) = 0;

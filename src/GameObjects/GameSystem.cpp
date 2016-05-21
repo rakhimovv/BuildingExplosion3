@@ -27,15 +27,22 @@ GameSystem::GameSystem(float constTimeStep) : gameParameters("data/gameconfig.js
     this->cubeRenderer = new CubeRenderer(gameGraphic->GetCubeShader(), gameParameters);
 
     float edge = 0.05f;
+
     int H = 3;
-    int N = 20;
-    float R1 = 0.4f;
-    building = new Building(Building::Type::Hyperboloid, minPoint, this, edge, N, H, R1);
+    int N = 35;
+    float R1 = 0.8f;
+    building = new Building(Building::Type::Cylinder, minPoint, this, edge, N, H, R1);
+
+//    int H = 2;
+//    int N = 100;
+//    float R1 = 1.3f;
+//    building = new Building(Building::Type::Hyperboloid, minPoint, this, edge, N, H, R1);
 
     // Создадим бомбу
     Bomb::Descriptor bombDesc;
     bombDesc.edgeLength = 2.0f * edge;
-    bombDesc.pos = Vector3f(0.0f, H / 3.0f, 0.0f);
+    //bombDesc.pos = Vector3f(0.0f, H / 3.0f, 0.0f);
+    bombDesc.pos = Vector3f(0.0f, 1.5f, 0.0f);
     bomb = new Bomb(bombDesc, this);
 }
 

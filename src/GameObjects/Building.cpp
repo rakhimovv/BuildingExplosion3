@@ -25,6 +25,9 @@ Building::Building(Building::Type buildingType, Vector3f minPoint, GameSystem *o
                     Vector3f pos = Vector3f(x * R1, minPoint.y + edge / 2.0f + z, y * R1);
                     blockDesc.vertexPositions.push_back(pos);
                     blockDesc.edgeLength = edge;
+                    if (z == 0) {
+                        blockDesc.fixed = true;
+                    }
                     blocks.Add(new Block(blockDesc, owner));
                 }
             }
@@ -38,13 +41,13 @@ Building::Building(Building::Type buildingType, Vector3f minPoint, GameSystem *o
                     auto jHandle = *blocks.GetByIndex(j)->GetParticleHandle(0);
                     Vector3f jPos = jHandle.GetPos();
 
-                    //if (i != j && (jPos - iPos).Length() < std::sqrt(2.0f) * empty + 0.1) {
-                    //if (i != j) {
                     if (i != j && (jPos - iPos).Length() <= a + 0.2f) {
                         LinkLine l;
 
-                        l.linkId = owner->GetParticleSystem()->AddLink(iHandle, jHandle, 0.6f, 1.0f);
-                        l.p0 = iHandle.GetParticleIndex();//this->particleSystem->GetLinks().back().particleId0;
+                        float condConst = 0.0015;
+                        //float condConst = 0.001;
+                        l.linkId = owner->GetParticleSystem()->AddLink(iHandle, jHandle, condConst, 0.6f, 1.0f);
+                        l.p0 = iHandle.GetParticleIndex();
                         l.p1 = jHandle.GetParticleIndex();
                         l.exists = true;
 
@@ -65,9 +68,6 @@ Building::Building(Building::Type buildingType, Vector3f minPoint, GameSystem *o
         case Type::Hyperboloid: {
             double alpha = 2.0f * M_PI / (N - 1.0f);
 
-            //double a = R1 * sin(alpha) / sin(90.0 - alpha / 2.0);
-            double a = 1.5f;
-
             for (float z = 0; z < H; z++) {
                 for (int i = 0; i < N; i++) {
                     double beta = alpha * (i * 1.0f);
@@ -75,48 +75,26 @@ Building::Building(Building::Type buildingType, Vector3f minPoint, GameSystem *o
                     float y = sinf(beta);
 
                     Block::Descriptor blockDesc;
-                    Vector3f pos = Vector3f(x * R1, minPoint.y + edge / 2.0f + z, y * R1);
+                    Vector3f pos = Vector3f(x * R1, minPoint.y + edge / 2.0f + z * 3.0f, y * R1);
                     blockDesc.vertexPositions.push_back(pos);
                     blockDesc.edgeLength = edge;
+                    if (z == 0) {
+                        blockDesc.fixed = true;
+                    }
                     blocks.Add(new Block(blockDesc, owner));
                 }
             }
 
-            /*
-            for (int i = 0; i < blocks.GetElementsCount(); i++) {
-
-                auto iHandle = *blocks.GetByIndex(i)->GetParticleHandle(0);
-                Vector3f iPos = iHandle.GetPos();
-                int j = (i+N+N/3) % (2 * N);
-                std::cout << "i, j: " << i << " " << j << "\n";
-                auto jHandle = *blocks.GetByIndex(j)->GetParticleHandle(0);
-                Vector3f jPos = jHandle.GetPos();
-
-                LinkLine l;
-
-                l.linkId = owner->GetParticleSystem()->AddLink(iHandle, jHandle, 0.8f, 1.0f);
-                l.p0 = iHandle.GetParticleIndex();
-                l.p1 = jHandle.GetParticleIndex();
-                l.exists = true;
-
-                glm::vec3 pos0(iPos.x, iPos.y, iPos.z);
-                glm::vec3 pos1(jPos.x, jPos.y, jPos.z);
-
-                glm::vec3 color = glm::vec3(1.0f, 0.0f, 0.0f);
-
-                l.line = new Line(pos0, pos1, color, owner->GetGameGraphic()->GetLineShader());
-
-                linkLine.Add(l);
-            }
-             */
+            float stiffness1 = 0.6f;
+            float stiffness2 = 0.7f;
+            float condConst = 0.005f;
+            //int offset = N / 3;
+            int offset = N / 3;
 
             for (int h = 0; h < H - 1; h++) {
                 for (int i = 0; i < N; i++) {
                     int j1 = h * N + i;
-                    //int j2 = (h+1) * N + ((h+1) * N + i + N / 3) % ((h+2) * N);
-                    int j2 = (h+1) * N + (i + N / 5) % N;
-
-                    std::cout << "j1, j2: " << j1 << " " << j2 << "\n";
+                    int j2 = (h + 1) * N + (i + offset) % N;
 
                     auto iHandle = *blocks.GetByIndex(j1)->GetParticleHandle(0);
                     Vector3f iPos = iHandle.GetPos();
@@ -125,7 +103,7 @@ Building::Building(Building::Type buildingType, Vector3f minPoint, GameSystem *o
 
                     LinkLine l;
 
-                    l.linkId = owner->GetParticleSystem()->AddLink(iHandle, jHandle, 0.8f, 1.0f);
+                    l.linkId = owner->GetParticleSystem()->AddLink(iHandle, jHandle, condConst, stiffness1, 1.0f);
                     l.p0 = iHandle.GetParticleIndex();
                     l.p1 = jHandle.GetParticleIndex();
                     l.exists = true;
@@ -156,7 +134,7 @@ Building::Building(Building::Type buildingType, Vector3f minPoint, GameSystem *o
 
                     LinkLine l;
 
-                    l.linkId = owner->GetParticleSystem()->AddLink(iHandle, jHandle, 0.8f, 1.0f);
+                    l.linkId = owner->GetParticleSystem()->AddLink(iHandle, jHandle, condConst, stiffness2, 1.0f);
                     l.p0 = iHandle.GetParticleIndex();
                     l.p1 = jHandle.GetParticleIndex();
                     l.exists = true;
@@ -213,8 +191,8 @@ void Building::Update(float dt, GameSystem * owner) {
             //std::cout << "Update color: " << linkLine[i].linkId << "\n";
             //linkLine[i].line->dump();
             linkLine[i].exists = 0;
-            //glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f);
-            glm::vec3 color = glm::vec3(-1.0f, 1.0f, 1.0f);
+            glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f);
+            //glm::vec3 color = glm::vec3(-1.0f, 1.0f, 1.0f);
             linkLine[i].line->updateColor(&color);
         }
     }

@@ -9,7 +9,7 @@ void AosParticle<UserInfo>::Integrate(float dt) {
 }
 
 template<typename UserInfo>
-AosLink<UserInfo>::AosLink(size_t particleId0, size_t particleId1, float stiffness, float stretch,
+AosLink<UserInfo>::AosLink(size_t particleId0, size_t particleId1, float condConst, float stiffness, float stretch,
                            AosParticleSystem<UserInfo> *sys) {
     this->particleId0 = particleId0;
     this->particleId1 = particleId1;
@@ -17,6 +17,7 @@ AosLink<UserInfo>::AosLink(size_t particleId0, size_t particleId1, float stiffne
     this->defLength =
             (sys->GetParticleById(particleId0).pos - sys->GetParticleById(particleId1).pos).Length() * stretch;
     this->exists = true;
+    this->condConst = condConst;
 }
 
 template<typename UserInfo>
@@ -39,9 +40,9 @@ void AosLink<UserInfo>::Solve(AosParticleSystem<UserInfo> *sys) {
     // x stiffness
 
 
+    // 0.0015
 
-
-    if (exists && cond > 0.01 * stiffness) {
+    if (exists && cond > condConst * stiffness) {
         std::cout << "UPSS! :)\n";
         exists = false;
     }
@@ -125,10 +126,12 @@ void AosParticleSystem<UserInfo>::Update() {
 
 template<typename UserInfo>
 size_t AosParticleSystem<UserInfo>::AddLink(ParticleHandle<UserInfo> particle0, ParticleHandle<UserInfo> particle1,
+                                            float condConst,
                                             float stiffness, float stretch) {
     links.push_back(AosLink<UserInfo>(
             particle0.GetParticleIndex(),
             particle1.GetParticleIndex(),
+            condConst,
             stiffness,
             stretch,
             this));
