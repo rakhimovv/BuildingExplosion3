@@ -19,13 +19,13 @@ Bomb::~Bomb() {
     particleHandle.Release();
 }
 
-void Bomb::Update(float dt) {
+void Bomb::Boom(float dt) {
     // TODO замутить движение бомбы или привязать к камере ее
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+    if (boom) {//if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
         this->exists = false;
         // ВЗРЫВ
-        std::cout << "ВЗРЫВ!\n";
+        //std::cout << "ВЗРЫВ!\n";
 
         Explosion::Descriptor explosionDesc;
         explosionDesc.maxRadius = 1.0f;

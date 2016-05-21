@@ -66,6 +66,16 @@ public:
 
     Camera * GetCamera();
 
+    void OnCylinder();
+
+    void OnHyperboloid();
+
+    void OnNewBomb();
+
+    void OnBoom();
+
+    void OnExit();
+
 private:
     enum Status {
         MENU,

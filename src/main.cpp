@@ -13,28 +13,37 @@
 #include "../dependencies/json/json.h"
 #include "GameParameters.h"
 
-void OnActive1() {
+GameSystem *menuSystem;
+
+void OnCylinder() {
     std::cout << "Something1\n";
+    menuSystem->OnCylinder();
 }
 
-void OnActive2() {
+void OnHyperboloid() {
     std::cout << "Something2\n";
+    menuSystem->OnHyperboloid();
 }
 
-void OnActive3() {
+void OnNewBomb() {
     std::cout << "Something3\n";
+    menuSystem->OnNewBomb();
 }
 
 void OnExit() {
-    exit(0);
+    menuSystem->OnExit();
+    //exit(0);
 }
 
-void Boom() {
+void OnBoom() {
+    menuSystem->OnBoom();
     std::cout << "KABOOOOM\n";
 }
 
-sfg::Window::Ptr enableSFGUI(sf::RenderWindow &window) {
+sfg::Window::Ptr enableSFGUI(sf::RenderWindow &window, GameSystem *gameSystem) {
     window.clear();
+
+    menuSystem = gameSystem;
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) std::cout << "OK";
 
@@ -51,9 +60,9 @@ sfg::Window::Ptr enableSFGUI(sf::RenderWindow &window) {
     table->SetRowSpacings(5.f);
     table->SetColumnSpacings(5.f);
 
-    sfg::Button::Ptr map1 = sfg::Button::Create("map 1");
-    sfg::Button::Ptr map2 = sfg::Button::Create("map 2");
-    sfg::Button::Ptr map3 = sfg::Button::Create("map 3");
+    sfg::Button::Ptr map1 = sfg::Button::Create("Cylinder");
+    sfg::Button::Ptr map2 = sfg::Button::Create("Hyperboloid");
+    sfg::Button::Ptr map3 = sfg::Button::Create("New bomb");
     sfg::Button::Ptr boom = sfg::Button::Create("BOOM");
     sfg::Button::Ptr ext = sfg::Button::Create("exit");
     auto Scale = sfg::Scale::Create(0.f, 100.f, 1.f, sfg::Scale::Orientation::HORIZONTAL);
@@ -74,11 +83,11 @@ sfg::Window::Ptr enableSFGUI(sf::RenderWindow &window) {
     table->Attach(boom, sf::Rect<sf::Uint32>(1, 0, 1, 3), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL,
                   sf::Vector2f(10.f, 10.f));
 
-    map1->GetSignal(sfg::Button::OnLeftClick).Connect(OnActive1);
-    map2->GetSignal(sfg::Button::OnLeftClick).Connect(OnActive2);
-    map3->GetSignal(sfg::Button::OnLeftClick).Connect(OnActive3);
-    boom->GetSignal(sfg::Button::OnLeftClick).Connect(Boom);
-    ext->GetSignal(sfg::Button::OnLeftClick).Connect(OnExit);
+    map1->GetSignal(sfg::Button::OnLeftClick).Connect(OnCylinder);//gameSystem->OnCylinder());
+    map2->GetSignal(sfg::Button::OnLeftClick).Connect(OnHyperboloid);//gameSystem->OnHyperboloid());
+    map3->GetSignal(sfg::Button::OnLeftClick).Connect(OnNewBomb);//gameSystem->OnNewBomb());
+    boom->GetSignal(sfg::Button::OnLeftClick).Connect(OnBoom);//gameSystem->OnExit());
+    ext->GetSignal(sfg::Button::OnLeftClick).Connect(OnExit);//gameSystem->OnExit());
 
     guiWindow->Add(table);
 
@@ -100,8 +109,6 @@ sfg::Window::Ptr enableSFGUI(sf::RenderWindow &window) {
 
 int main()
 {
-    sf::RenderWindow window2(sf::VideoMode(500, 300), "Awesome window");
-
     //window2.setActive(false);
 
     sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "BuildingExplosion3", sf::Style::Default,
@@ -130,10 +137,12 @@ int main()
     float constTimeStep = 1.0f / 60.0f;
     GameSystem gameSystem(constTimeStep);
 
+    sf::RenderWindow window2(sf::VideoMode(500, 300), "Awesome window");
+
 //    GameParameters gameParameters("data/gameconfig.json");
 
     sfg::SFGUI sfgui;
-    sfg::Window::Ptr guiWindow = enableSFGUI(window2);
+    sfg::Window::Ptr guiWindow = enableSFGUI(window2, &gameSystem);
     auto Scale = sfg::Scale::Create(0.f, 100.f, 1.f, sfg::Scale::Orientation::HORIZONTAL);
 
 

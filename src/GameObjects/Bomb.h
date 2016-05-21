@@ -11,6 +11,8 @@
 
 class Bomb {
 public:
+    bool boom = false;
+
     struct Descriptor {
         Descriptor();
         Vector3f pos;
@@ -21,7 +23,7 @@ public:
 
     ~Bomb();
 
-    void Update(float dt);
+    void Boom(float dt);
 
     void Render();
 

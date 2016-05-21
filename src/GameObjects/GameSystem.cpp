@@ -31,7 +31,7 @@ GameSystem::GameSystem(float constTimeStep) : gameParameters("data/gameconfig.js
     int H = 3;
     int N = 35;
     float R1 = 0.8f;
-    building = new Building(Building::Type::Cylinder, minPoint, this, edge, N, H, R1);
+    //building = new Building(Building::Type::Cylinder, minPoint, this, edge, N, H, R1);
 
 //    int H = 2;
 //    int N = 100;
@@ -39,11 +39,13 @@ GameSystem::GameSystem(float constTimeStep) : gameParameters("data/gameconfig.js
 //    building = new Building(Building::Type::Hyperboloid, minPoint, this, edge, N, H, R1);
 
     // Создадим бомбу
+    /*
     Bomb::Descriptor bombDesc;
     bombDesc.edgeLength = 2.0f * edge;
     //bombDesc.pos = Vector3f(0.0f, H / 3.0f, 0.0f);
     bombDesc.pos = Vector3f(0.0f, 1.5f, 0.0f);
     bomb = new Bomb(bombDesc, this);
+     */
 }
 
 GameSystem::~GameSystem() {
@@ -74,6 +76,61 @@ Camera *GameSystem::GetCamera() {
     return camera;
 }
 
+void GameSystem::OnCylinder() {
+    delete building;
+    delete bomb;
+    delete explosion;
+    building = 0;
+    bomb = 0;
+    explosion = 0;
+    float edge = 0.05f;
+    int H = 3;
+    int N = 35;
+    float R1 = 0.8f;
+    building = new Building(Building::Type::Cylinder, minPoint, this, edge, N, H, R1);
+}
+
+void GameSystem::OnHyperboloid() {
+    delete building;
+    delete bomb;
+    delete explosion;
+    building = 0;
+    bomb = 0;
+    explosion = 0;
+    float edge = 0.05f;
+    int H = 2;
+    int N = 100;
+    float R1 = 1.3f;
+    building = new Building(Building::Type::Hyperboloid, minPoint, this, edge, N, H, R1);
+}
+
+void GameSystem::OnNewBomb() {
+    delete explosion;
+    delete bomb;
+    explosion = 0;
+    bomb = 0;
+    float edge = 0.05f;
+    Bomb::Descriptor bombDesc;
+    bombDesc.edgeLength = 2.0f * edge;
+    //bombDesc.pos = Vector3f(0.0f, H / 3.0f, 0.0f);
+    bombDesc.pos = Vector3f(0.0f, 1.5f, 0.0f);
+    bomb = new Bomb(bombDesc, this);
+}
+
+void GameSystem::OnBoom() {
+    if (bomb && bomb->Exists()) {
+        bomb->boom = true;
+    } else {
+        delete bomb;
+        bomb = 0;
+    }
+}
+
+void GameSystem::OnExit() {
+    GameSystem::~GameSystem();
+    exit(0);
+}
+
 void GameSystem::SetExplosion(Explosion *explosion) {
     this->explosion = explosion;
 }
@@ -91,11 +148,12 @@ void GameSystem::Update(float dt, std::queue<sf::Keyboard::Key> &pressedButtons)
     }
 
     // Обновляем здание
-    building->Update(dt, this);
+    if (building) {
+        building->Update(dt, this);
+    }
 
-    // Обновить бомбу
     if (bomb && bomb->Exists()) {
-        bomb->Update(dt);
+        bomb->Boom(dt);
     } else {
         delete bomb;
         bomb = 0;
@@ -114,7 +172,9 @@ void GameSystem::Update(float dt, std::queue<sf::Keyboard::Key> &pressedButtons)
 
     this->skyBoxRenderer->render(this->camera);
 
-    building->Render(this, camera);
+    if (building) {
+        building->Render(this, camera);
+    }
 
     if (bomb && bomb->Exists()) {
         bomb->Render();
