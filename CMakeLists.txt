@@ -69,6 +69,13 @@ if (SFML_FOUND)
     target_link_libraries(${EXECUTABLE_NAME} ${SFML_LIBRARIES})
 endif ()
 
+# Detect and add SFGUI
+find_package(SFGUI 0.2.3 REQUIRED)
+if (SFGUI_FOUND)
+    include_directories(${SFGUI_INCLUDE_DIR})
+    target_link_libraries(${EXECUTABLE_NAME} ${SFGUI_LIBRARY_RELEASE} ${SFGUI_DEPENDENCIES})
+endif ()
+
 # Install target
 install(TARGETS ${EXECUTABLE_NAME} DESTINATION bin)
 
