@@ -19,28 +19,26 @@
     "skyboxBottomTexture": "data/hills_dn.tga"
   },
   "camera": {
-    "cameraPos_x" : 0.226,
+    "cameraPos_x": 0.509532,
     "cameraPos_y" : 3.36599,
-    "cameraPos_z" : 3.38536,
-
-    "cameraFront_x" : -0.0531586,
-    "cameraFront_y" : -0.0531586,
-    "cameraFront_z" : -0.0531586,
+    "cameraPos_z": 3.33776,
+    "cameraFront_x": -0.219909,
+    "cameraFront_y": -0.537451,
+    "cameraFront_z": -0.814117,
 
     "cameraUp_x" : 0,
     "cameraUp_y" : 1, 
     "cameraUp_z" : 0,
     
     "cameraRight_x" : 0.707107,
-    "cameraRight_y" : -0,
+    "cameraRight_y": 0,
     "cameraRight_z" : 0.707107,
 
     "cameraDir_x" : -0.707107,
     "cameraDir_y" :  0,
     "cameraDir_z" :  0.707107,
-
-    "pitchAngle" : -21.3402,
-    "yawAngle" : -21.3402,
+    "pitchAngle": -32.5103,
+    "yawAngle": -105.116,
 
     "cameraSpeed" : 0.0125,
     "cameraSpeedStep": 0.0025
